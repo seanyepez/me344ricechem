@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1.7
+
+# Tunix v0.1.7 is pinned to the public release used as the reproducible base.
+# JAX installs its TPU runtime through the official jax[tpu] extra.
+FROM python:3.11.9-slim-bookworm
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+WORKDIR /workspace
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+RUN python -m pip install --upgrade pip==24.2 \
+    && python -m pip install "jax[tpu]==0.6.2" \
+    && python -m pip install "google-tunix @ git+https://github.com/google/tunix.git@ce63a9fd65f02c4c398e74f000f98371c1575eb6" \
+    && python -m pip install transformers==4.53.2 sentencepiece==0.2.0 safetensors==0.5.3
+COPY src/ /workspace/src/
+RUN useradd --create-home --uid 10001 runner \
+    && mkdir -p /data /models /outputs \
+    && chown -R runner:runner /workspace /data /models /outputs
+USER runner
+ENTRYPOINT ["python", "src/train_tpu_4b.py"]

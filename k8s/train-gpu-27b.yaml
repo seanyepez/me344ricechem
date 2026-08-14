@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ricechem-train-gpu-27b
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      annotations:
+        gke-gcsfuse/volumes: "true"
+    spec:
+      serviceAccountName: ${K8S_SERVICE_ACCOUNT}
+      restartPolicy: Never
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-a100
+      containers:
+        - name: training
+          image: ${GPU_TRAIN_IMAGE}
+          command: ["python", "/workspace/src/train_gpu_27b.py"]
+          env:
+            - { name: DATA_DIR, value: "/data" }
+            - { name: MODEL_PATH, value: "/storage/models/gemma-3-27b-it" }
+            - { name: OUTPUT_DIR, value: "/storage/outputs/ricechem-lora-adapter-27b-gpu" }
+            - { name: BATCH_SIZE, value: "2" }
+            - { name: GRAD_ACCUM, value: "8" }
+            - { name: MAX_LEN, value: "768" }
+            - { name: EPOCHS, value: "2" }
+            - { name: LR, value: "2e-4" }
+            - { name: SEED, value: "42" }
+            - { name: PYTORCH_CUDA_ALLOC_CONF, value: "expandable_segments:True" }
+          resources:
+            requests: { nvidia.com/gpu: "1", cpu: "10", memory: 80Gi }
+            limits: { nvidia.com/gpu: "1", cpu: "10", memory: 80Gi }
+          volumeMounts:
+            - { name: storage, mountPath: /storage }
+            - { name: data, mountPath: /data, readOnly: true }
+            - { name: dshm, mountPath: /dev/shm }
+      volumes:
+        - name: storage
+          csi:
+            driver: gcsfuse.csi.storage.gke.io
+            volumeAttributes:
+              bucketName: ${MODEL_BUCKET}
+              mountOptions: "implicit-dirs"
+              fileCacheCapacity: 60Gi
+              fileCacheForRangeRead: "true"
+        - name: data
+          configMap:
+            name: ${RICECHEM_DATA_CONFIGMAP}
+        - name: dshm
+          emptyDir: { medium: Memory, sizeLimit: 16Gi }

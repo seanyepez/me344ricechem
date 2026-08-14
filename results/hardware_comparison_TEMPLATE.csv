@@ -1,0 +1,7 @@
+hardware,checkpoint,n,concurrency,wall_seconds,decisions_per_second,latency_p50_ms,latency_p95_ms,peak_memory_gb,mean_utilization_pct,cost_usd,telemetry_source,status
+CPU,gemma-3-4b-ft,861,1,,,,,,,,process metrics,pending full run
+CPU,gemma-3-4b-ft,861,24,,,,,,,,process metrics,pending full run
+A100,gemma-3-4b-ft,861,1,,,,,,,,nvidia-smi,pending controlled run
+A100,gemma-3-4b-ft,861,24,,,,,,,,nvidia-smi,pending controlled run
+TPU v5e-8,gemma-3-4b-ft,861,1,,,,,,,,TPU/XLA profiler,pending controlled run
+TPU v5e-8,gemma-3-4b-ft,861,24,,,,,,,,TPU/XLA profiler,pending controlled run

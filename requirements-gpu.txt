@@ -1,0 +1,2 @@
+-r requirements-common.txt
+bitsandbytes==0.46.1

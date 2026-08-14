@@ -1,0 +1,40 @@
+# Authorized data and generated manifests
+data/
+**/train.csv
+**/valid.csv
+**/test.csv
+**/*.jsonl
+**/*.jsonl.gz.*
+**/question_rubrics.json
+
+# Models and adapters
+models/
+outputs/
+checkpoints/
+adapters/
+*.safetensors
+*.bin
+*.ckpt
+
+# Credentials and local infrastructure
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*kubeconfig*
+.kube/
+.config/gcloud/
+
+# Python and editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+.deck_build/
+*.inspect.ndjson
+
+# Raw telemetry may identify private infrastructure; publish reviewed summaries only.
+telemetry/raw/

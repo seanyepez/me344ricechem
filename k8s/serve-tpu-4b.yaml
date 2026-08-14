@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricechem-serve-tpu-4b
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app: ricechem-serve-tpu-4b }
+  template:
+    metadata:
+      labels:
+        app: ricechem-serve-tpu-4b
+        kueue.x-k8s.io/queue-name: ${KUEUE_NAME}
+      annotations: { gke-gcsfuse/volumes: "true" }
+    spec:
+      serviceAccountName: ${K8S_SERVICE_ACCOUNT}
+      nodeSelector:
+        cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+        cloud.google.com/gke-tpu-topology: 2x4
+      containers:
+        - name: vllm
+          image: vllm/vllm-tpu:v0.24.0
+          command: ["vllm", "serve", "/storage/outputs/ricechem-checkpoint-4b"]
+          args:
+            - --host=0.0.0.0
+            - --port=8000
+            - --tensor-parallel-size=8
+            - --max-model-len=2048
+            - --max-num-seqs=128
+            - --max-num-batched-tokens=4096
+          env:
+            - { name: VLLM_XLA_CACHE_PATH, value: "/storage/outputs/xla-cache-4b" }
+          ports: [{ containerPort: 8000, name: api }]
+          resources:
+            requests: { google.com/tpu: "8", memory: 100Gi }
+            limits: { google.com/tpu: "8", memory: 300Gi }
+          startupProbe:
+            httpGet: { path: /health, port: api }
+            periodSeconds: 10
+            failureThreshold: 360
+          readinessProbe:
+            httpGet: { path: /v1/models, port: api }
+            periodSeconds: 10
+          volumeMounts:
+            - { name: storage, mountPath: /storage }
+            - { name: dshm, mountPath: /dev/shm }
+      volumes:
+        - name: storage
+          csi:
+            driver: gcsfuse.csi.storage.gke.io
+            volumeAttributes:
+              bucketName: ${MODEL_BUCKET}
+              mountOptions: "implicit-dirs"
+              fileCacheCapacity: 100Gi
+        - name: dshm
+          emptyDir: { medium: Memory, sizeLimit: 60Gi }

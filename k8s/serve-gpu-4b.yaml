@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricechem-serve-gpu-4b
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app: ricechem-serve-gpu-4b }
+  template:
+    metadata:
+      labels: { app: ricechem-serve-gpu-4b }
+      annotations: { gke-gcsfuse/volumes: "true" }
+    spec:
+      serviceAccountName: ${K8S_SERVICE_ACCOUNT}
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-a100
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:v0.11.0
+          command: ["vllm", "serve", "/storage/outputs/ricechem-checkpoint-4b"]
+          args:
+            - --host=0.0.0.0
+            - --port=8000
+            - --max-model-len=2048
+            - --max-num-seqs=128
+            - --gpu-memory-utilization=0.90
+          ports: [{ containerPort: 8000, name: api }]
+          resources:
+            requests: { nvidia.com/gpu: "1", cpu: "10", memory: 60Gi }
+            limits: { nvidia.com/gpu: "1", cpu: "10", memory: 60Gi }
+          startupProbe:
+            httpGet: { path: /health, port: api }
+            periodSeconds: 10
+            failureThreshold: 180
+          readinessProbe:
+            httpGet: { path: /v1/models, port: api }
+            periodSeconds: 10
+          volumeMounts:
+            - { name: storage, mountPath: /storage }
+            - { name: dshm, mountPath: /dev/shm }
+      volumes:
+        - name: storage
+          csi:
+            driver: gcsfuse.csi.storage.gke.io
+            volumeAttributes:
+              bucketName: ${MODEL_BUCKET}
+              mountOptions: "implicit-dirs"
+              fileCacheCapacity: 40Gi
+        - name: dshm
+          emptyDir: { medium: Memory, sizeLimit: 30Gi }

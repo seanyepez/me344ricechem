@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Fine-tuning Gemma for RiceChem grading"
+message: "If you use this experiment code, please cite this repository and the RiceChem dataset paper."
+type: software
+authors:
+  - family-names: "Yépez"
+    given-names: "Sean"
+license: Apache-2.0
+repository-code: "https://github.com/seanyepez/me344ricechem"
+date-released: 2026-08-13

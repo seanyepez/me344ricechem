@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ricechem-serve-cpu-4b
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app: ricechem-serve-cpu-4b }
+  template:
+    metadata:
+      labels: { app: ricechem-serve-cpu-4b }
+      annotations: { gke-gcsfuse/volumes: "true" }
+    spec:
+      serviceAccountName: ${K8S_SERVICE_ACCOUNT}
+      containers:
+        - name: transformers
+          image: ${CPU_SERVE_IMAGE}
+          env:
+            - { name: MODEL_PATH, value: "/storage/outputs/ricechem-checkpoint-4b" }
+            - { name: DEVICE, value: "cpu" }
+            - { name: TORCH_DTYPE, value: "float32" }
+            - { name: PORT, value: "8000" }
+          ports: [{ containerPort: 8000, name: api }]
+          resources:
+            requests: { cpu: "16", memory: 48Gi }
+            limits: { cpu: "16", memory: 48Gi }
+          startupProbe:
+            httpGet: { path: /health, port: api }
+            periodSeconds: 10
+            failureThreshold: 180
+          readinessProbe:
+            httpGet: { path: /health, port: api }
+            periodSeconds: 10
+          volumeMounts:
+            - { name: storage, mountPath: /storage, readOnly: true }
+      volumes:
+        - name: storage
+          csi:
+            driver: gcsfuse.csi.storage.gke.io
+            volumeAttributes:
+              bucketName: ${MODEL_BUCKET}
+              mountOptions: "implicit-dirs"
+              fileCacheCapacity: 40Gi

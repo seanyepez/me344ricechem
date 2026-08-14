@@ -1,0 +1,417 @@
+{
+  "cells": [
+    {
+      "label": "opus5-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.8049,
+      "acc_skip": 0.8049,
+      "f1_binary": 0.8433,
+      "f1_macro": 0.7924,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.739,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.724,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8894,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8889,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 675.1,
+      "throughput_per_sec": 1.275
+    },
+    {
+      "label": "base-gpu-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.6725,
+      "acc_skip": 0.6725,
+      "f1_binary": 0.7446,
+      "f1_macro": 0.6441,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.5882,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6146,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.6636,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8722,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 12.3,
+      "throughput_per_sec": 69.81
+    },
+    {
+      "label": "ft-tpu-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7213,
+      "acc_skip": 0.7213,
+      "f1_binary": 0.7884,
+      "f1_macro": 0.6901,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.6838,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6094,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.7373,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8778,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 11.7,
+      "throughput_per_sec": 73.34
+    },
+    {
+      "label": "ft-gpu-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7178,
+      "acc_skip": 0.7178,
+      "f1_binary": 0.7903,
+      "f1_macro": 0.6794,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.6507,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6406,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.7373,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8778,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 17.0,
+      "throughput_per_sec": 50.68
+    },
+    {
+      "label": "ft27b-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.8328,
+      "acc_skip": 0.8328,
+      "f1_binary": 0.8566,
+      "f1_macro": 0.828,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.8162,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.7708,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8618,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8889,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 645.2,
+      "throughput_per_sec": 1.33
+    },
+    {
+      "label": "base27b-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7096,
+      "acc_skip": 0.7096,
+      "f1_binary": 0.748,
+      "f1_macro": 0.7028,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.625,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.7083,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.7465,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.7944,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 693.8,
+      "throughput_per_sec": 1.24
+    },
+    {
+      "label": "sonnet5-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.6748,
+      "acc_skip": 0.6748,
+      "f1_binary": 0.6875,
+      "f1_macro": 0.6743,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.7353,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6979,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.765,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.45,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 700.6,
+      "throughput_per_sec": 1.229
+    },
+    {
+      "label": "haiku45-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7677,
+      "acc_skip": 0.7677,
+      "f1_binary": 0.7877,
+      "f1_macro": 0.7656,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.7279,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.7396,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8111,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8056,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 1683.3,
+      "throughput_per_sec": 0.512
+    },
+    {
+      "label": "terra-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7875,
+      "acc_skip": 0.7875,
+      "f1_binary": 0.8183,
+      "f1_macro": 0.7812,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.761,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6979,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8433,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8556,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 643.4,
+      "throughput_per_sec": 1.338
+    },
+    {
+      "label": "luna-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7828,
+      "acc_skip": 0.7828,
+      "f1_binary": 0.8224,
+      "f1_macro": 0.7714,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.75,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.7031,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8433,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8444,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 667.5,
+      "throughput_per_sec": 1.29
+    },
+    {
+      "label": "sol-cli-bare",
+      "n": 861,
+      "abstain_rate": 0.0,
+      "acc_minus1": 0.7944,
+      "acc_skip": 0.7944,
+      "f1_binary": 0.8363,
+      "f1_macro": 0.7801,
+      "per_question": {
+        "q1": {
+          "n": 272,
+          "acc": 0.7757,
+          "always_true": 0.5331
+        },
+        "q2": {
+          "n": 192,
+          "acc": 0.6875,
+          "always_true": 0.5
+        },
+        "q3": {
+          "n": 217,
+          "acc": 0.8618,
+          "always_true": 0.4194
+        },
+        "q4": {
+          "n": 180,
+          "acc": 0.8556,
+          "always_true": 0.8778
+        }
+      },
+      "wall_secs": 1185.4,
+      "throughput_per_sec": 0.726
+    }
+  ],
+  "mcnemar": {
+    "ft27b-bare:opus5-cli-bare": {
+      "b": 112,
+      "c": 88,
+      "p": 0.10364
+    },
+    "ft27b-bare:base27b-bare": {
+      "b": 169,
+      "c": 63,
+      "p": 0.0
+    },
+    "ft27b-bare:sol-cli-bare": {
+      "b": 122,
+      "c": 89,
+      "p": 0.02736
+    },
+    "haiku45-cli-bare:sonnet5-cli-bare": {
+      "b": 180,
+      "c": 100,
+      "p": 0.0
+    }
+  },
+  "reference_bars": [
+    {
+      "name": "RoBERTa-large-MNLI fine-tune (Sonkar 2024)",
+      "acc": 86.8,
+      "note": "published ceiling; binary F1 0.888"
+    },
+    {
+      "name": "Autorubric Gemini-3-Flash 5-shot (COLM 2026)",
+      "acc": 80.7,
+      "note": "LLM-judge SOA; n=819 cross-denominator"
+    },
+    {
+      "name": "Autorubric 0-shot",
+      "acc": 78.0,
+      "note": "same protocol"
+    },
+    {
+      "name": "GPT-4 zero-shot (Sonkar 2024)",
+      "acc": 70.9,
+      "note": "T=1.0; macro F1 0.689"
+    },
+    {
+      "name": "Always-TRUE majority class",
+      "acc": 56.9,
+      "note": "measured on this frozen 861 manifest"
+    }
+  ],
+  "framing_cap": "All numbers are agreement with a single TA's binary labels; no inter-rater reliability is published for RiceChem. External validity, not proof of grading quality. Q4 base rate 87.8% always-TRUE — read per-question rows, not aggregates."
+}

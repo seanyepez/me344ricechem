@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Gemma 4B base",
+    "family": "gemma",
+    "acc": 67.25,
+    "cost_per_1k_usd": 0.0146,
+    "pareto": true
+  },
+  {
+    "name": "Gemma 4B fine-tuned (A100)",
+    "family": "gemma",
+    "acc": 71.78,
+    "cost_per_1k_usd": 0.0201,
+    "pareto": true
+  },
+  {
+    "name": "Gemma 4B fine-tuned (TPU)",
+    "family": "gemma",
+    "acc": 72.13,
+    "cost_per_1k_usd": 0.0364,
+    "pareto": true
+  },
+  {
+    "name": "GPT-5.6 Luna",
+    "family": "openai",
+    "acc": 78.28,
+    "cost_per_1k_usd": 0.5864,
+    "pareto": true
+  },
+  {
+    "name": "Gemma 27B fine-tuned†",
+    "family": "gemma",
+    "acc": 83.28,
+    "cost_per_1k_usd": 0.7665,
+    "pareto": true
+  },
+  {
+    "name": "Gemma 27B base†",
+    "family": "gemma",
+    "acc": 70.96,
+    "cost_per_1k_usd": 0.8221,
+    "pareto": false
+  },
+  {
+    "name": "GPT-5.6 Terra",
+    "family": "openai",
+    "acc": 78.75,
+    "cost_per_1k_usd": 2.6478,
+    "pareto": false
+  },
+  {
+    "name": "GPT-5.6 Sol",
+    "family": "openai",
+    "acc": 79.44,
+    "cost_per_1k_usd": 5.0896,
+    "pareto": false
+  },
+  {
+    "name": "Claude Sonnet 5",
+    "family": "anthropic",
+    "acc": 67.48,
+    "cost_per_1k_usd": 6.0418,
+    "pareto": false
+  },
+  {
+    "name": "Claude Opus 5",
+    "family": "anthropic",
+    "acc": 80.49,
+    "cost_per_1k_usd": 7.0196,
+    "pareto": false
+  },
+  {
+    "name": "Claude Haiku 4.5",
+    "family": "anthropic",
+    "acc": 76.77,
+    "cost_per_1k_usd": 10.1589,
+    "pareto": false
+  }
+]

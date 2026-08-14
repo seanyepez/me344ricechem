@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ricechem-train-tpu-4b
+  labels:
+    kueue.x-k8s.io/queue-name: ${KUEUE_NAME}
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      annotations:
+        gke-gcsfuse/volumes: "true"
+    spec:
+      serviceAccountName: ${K8S_SERVICE_ACCOUNT}
+      restartPolicy: Never
+      nodeSelector:
+        cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+        cloud.google.com/gke-tpu-topology: 2x4
+      containers:
+        - name: training
+          image: ${TPU_TRAIN_IMAGE}
+          command: ["python", "/workspace/src/train_tpu_4b.py"]
+          env:
+            - { name: DATA_DIR, value: "/data" }
+            - { name: MODEL_PATH, value: "/storage/models/gemma-3-4b-it" }
+            - { name: CHECKPOINT_DIR, value: "/storage/outputs/ricechem-lora-ckpt-4b" }
+            - { name: OUTPUT_DIR, value: "/storage/outputs/ricechem-lora-adapter-4b" }
+            - { name: BATCH_SIZE, value: "16" }
+            - { name: MAX_LEN, value: "768" }
+            - { name: EPOCHS, value: "3" }
+            - { name: LR, value: "1e-3" }
+          resources:
+            requests: { google.com/tpu: "8", memory: 100Gi }
+            limits: { google.com/tpu: "8", memory: 300Gi }
+          volumeMounts:
+            - { name: storage, mountPath: /storage }
+            - { name: data, mountPath: /data, readOnly: true }
+            - { name: dshm, mountPath: /dev/shm }
+      volumes:
+        - name: storage
+          csi:
+            driver: gcsfuse.csi.storage.gke.io
+            volumeAttributes:
+              bucketName: ${MODEL_BUCKET}
+              mountOptions: "implicit-dirs"
+              fileCacheCapacity: 60Gi
+              fileCacheForRangeRead: "true"
+        - name: data
+          configMap:
+            name: ${RICECHEM_DATA_CONFIGMAP}
+        - name: dshm
+          emptyDir: { medium: Memory, sizeLimit: 16Gi }
