@@ -370,13 +370,18 @@ The notebook runs without row-level RiceChem data. If a completed
 matrix as an additional section; otherwise it reports the matrix as unavailable and does
 not infer missing telemetry.
 
-## Current conclusion
+## Conclusion and future work
 
-Fine-tuning shows promise on held-out responses to the same questions and rubrics used during training. It has not yet demonstrated reliable transfer to a newly authored assessment, and the cold-start replication now quantifies that gap: encoders trained on three questions and tested on the completely unseen fourth (all four folds, five seeds) reach only 55.7-68.3% agreement, far below the 86% same-question ceiling. The practical deployment decision also remains open: assignment-specific fine-tuning has labeling, training, validation, serving, and failure-monitoring costs that must be compared with the higher marginal inference cost of a general-purpose frontier model.
-
-The next decisive experiment applies the same leave-one-question-out design to the fine-tuned Gemma models.
+Fine-tuning shows promise on held-out responses to the same questions and rubrics used during training. It has not yet demonstrated reliable transfer to a newly authored assessment, and the cold-start replication quantifies that gap: encoders trained on three questions and tested on the unseen fourth reach only 55.7-68.3% agreement, far below the 86% same-question ceiling.
 
 The operating rule this study supports: meet the grading-quality threshold first, then choose the smallest configuration that returns a full assignment within a 24-hour turnaround target, then minimize cost.
+
+Future work:
+
+- Leave-one-question-out evaluation of the fine-tuned Gemma models — the decisive transfer test.
+- A batched 27B endpoint (vLLM), to separate server design from model size in the observed throughput.
+- TPU device utilization and HBM capture via XProf/TensorBoard profiling with the matching service-account permissions.
+- A total-cost comparison: assignment-specific tuning (labeling, training, validation, serving, monitoring) versus the marginal inference cost of a general-purpose frontier model.
 
 ## Limitations
 
