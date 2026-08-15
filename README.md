@@ -385,7 +385,6 @@ The operating rule this study supports: meet the grading-quality threshold first
 - The frozen-test Gemma 27B versus Opus difference is not statistically significant (decision-level exact McNemar p = .10364; response-clustered permutation p = .12739).
 - Fine-tuning runs can fail or collapse; validation gates are required before deployment. Observed: one of three seeds under the initial recipe collapsed and was caught by the gate; the stabilized recipe then passed on all five seeds (80.3-85.8%).
 - The controlled serving rows share a configured checkpoint path, but checkpoint and image hashes were not captured; exact binary reproduction remains incomplete.
-- Total operating cost per assessment has not yet been measured; the current figure is a provisional API-equivalent inference proxy and excludes the complete labeling, validation, monitoring, idle-capacity, and human-review workflow.
 
 ## References
 
