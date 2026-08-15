@@ -85,8 +85,20 @@ print(f"model loaded in {t_model - t_start:.1f}s", flush=True)
 
 
 def read_split(name):
-    blob = b"".join(p.read_bytes() for p in sorted(DATA.glob(f"{name}.jsonl.gz.*")))
-    return [json.loads(l) for l in gzip.decompress(blob).decode().splitlines() if l]
+    chunks = sorted(DATA.glob(f"{name}.jsonl.gz.*"))
+    if chunks:
+        blob = b"".join(p.read_bytes() for p in chunks)
+        text = gzip.decompress(blob).decode()
+    else:
+        # ConfigMap-style gz chunks absent: fall back to a plain JSONL split file.
+        plain = DATA / f"{name}.jsonl"
+        if not plain.exists():
+            raise FileNotFoundError(
+                f"no {name}.jsonl.gz.* chunks and no {plain} in {DATA}; "
+                "mount the prepared cm_chunks/ directory or the plain split files"
+            )
+        text = plain.read_text()
+    return [json.loads(l) for l in text.splitlines() if l]
 
 
 def to_text(row):
