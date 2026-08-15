@@ -10,9 +10,9 @@
 > Submission map: executive technical report = this README · configuration = [`Dockerfile`](Dockerfile), [`Dockerfile.tpu`](Dockerfile.tpu), [`k8s/`](k8s/) · profiling notebook = [`notebooks/hardware_profile.ipynb`](notebooks/hardware_profile.ipynb) · five-slide deck = [`slides/`](slides/) (PDF + PPTX).
 > Course tooling used (three or more required): compute — CPU, NVIDIA A100, TPU v5e-8 · orchestration — Docker, Kubernetes/GKE · compilation — JAX/XLA, vLLM · telemetry — native node metrics and profiler receipts.
 
-This repository is a reproducible grading-model study developed through Stanford ME344. It evaluates supervised fine-tuning and serving systems on **[RiceChem](https://arxiv.org/abs/2404.14316)** (Sonkar et al., 2024), a human-labeled benchmark for long-form chemistry grading. ME344 provides the systems context; the research question is broader: when can a tuned, locally served grader compete with general-purpose frontier inference?
+I work on grading in STEM at Stanford, and this repository is my ME344 study of two questions from that work: how much does fine-tuning our own models help, and how could we scale grading to other classes on robust cloud infrastructure? It evaluates supervised fine-tuning and serving systems on **[RiceChem](https://arxiv.org/abs/2404.14316)** (Sonkar et al., 2024), a human-labeled benchmark for long-form chemistry grading.
 
-The repository contains only the RiceChem experiment. It does **not** contain Treemarks product code, student records, RiceChem rows, model weights, credentials, private infrastructure identifiers, or frontier-model execution tooling.
+The repository contains only the RiceChem experiment: no RiceChem rows, model weights, credentials, private infrastructure identifiers, or frontier-model execution tooling.
 
 ## Start here
 
