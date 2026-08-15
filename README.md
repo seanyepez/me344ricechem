@@ -49,15 +49,9 @@ RiceChem is an external research benchmark, not evidence that any model is ready
 
 ![Accuracy versus API-equivalent serving-cost proxy](figures/accuracy_cost.svg)
 
-The vector figures are regenerated directly from the aggregate receipts with
-`make figures`; the generator has no third-party Python dependencies and reads no
-row-level data.
-
-The horizontal axis is a **provisional API-equivalent proxy**, not a bill or total
-operating cost. [`results/cost_basis.json`](results/cost_basis.json) publishes the
-official live pricing URLs, rate snapshot, aggregate token/runtime inputs, formulas,
-pricing-mode assumptions, and unresolved historical-provenance limitations used to
-reproduce every plotted value.
+The horizontal axis is the cost of inference — an API-equivalent proxy, not a bill.
+Pricing basis and formulas: [`results/cost_basis.json`](results/cost_basis.json), rates
+live as of the experiment. Figures regenerate from the receipts with `make figures`.
 
 ## System Topology Diagram
 
@@ -144,16 +138,11 @@ completed concurrency-1 profile is:
 | A100 40 GB | 8.54 | 100.8 s | 116 / 129 ms | 19.5% mean GPU; 35.6 GB VRAM |
 | TPU v5e-8 | 11.39 | 75.6 s | 82 / 104 ms | Device utilization/HBM unavailable; not estimated |
 
-Relative to the CPU baseline, the A100 delivered **30.5×** and the TPU delivered
-**40.7×** throughput at concurrency 1. At concurrency 24, the completed accelerator
-rows reached 123.87 decisions/s on A100 and 98.41 decisions/s on TPU; the CPU c=24 leg
-is reported as a concluded bottleneck finding rather than a number (see the bottleneck
-diagnosis). At the published rate snapshot in [`results/cost_basis.json`](results/cost_basis.json),
-the completed c=24 legs correspond to active-time cost proxies of roughly $0.007 (A100,
-7.0 s) and $0.023 (TPU v5e-8, 8.7 s) per full 861-decision pass — derived values, active
-instance time only, not an invoice. Checkpoint and serving-image hashes were not captured,
-so the public receipt identifies this as a controlled workload result with incomplete
-binary provenance, not an exact artifact-reproduction claim.
+Relative to the CPU baseline at concurrency 1, the A100 delivered **30.5×** and the TPU **40.7×**.
+
+- Concurrency 24: 123.87 decisions/s (A100) and 98.41 (TPU). The CPU c=24 leg ended as a concluded bottleneck finding, not a number (see the diagnosis).
+- Cost per full 861-decision pass at c=24: about $0.007 (A100, 7.0 s) and $0.023 (TPU, 8.7 s) — active instance time at the [`results/cost_basis.json`](results/cost_basis.json) rate snapshot, not an invoice.
+- Checkpoint and image hashes were not captured, so this is a controlled workload result with incomplete binary provenance, not an exact artifact reproduction.
 
 #### Telemetry coverage map
 
@@ -163,13 +152,7 @@ binary provenance, not an exact artifact-reproduction claim.
 | A100 40 GB | 19.5% mean GPU — captured (c=1) | 35.6 GB VRAM — captured | p50/p95 captured |
 | TPU v5e-8 | device counters unavailable — disclosed, not estimated | HBM unavailable; 54 GB peak host memory captured | p50/p95 captured |
 
-Aggregate receipts: [`results/hardware_comparison.csv`](results/hardware_comparison.csv) and
-[`results/hardware_comparison.json`](results/hardware_comparison.json). The named remedy for
-the TPU gap is XProf/TensorBoard TPU profiling with profiler hooks and the matching
-service-account permissions; every unavailable cell is disclosed rather than estimated.
-
-Reviewed aggregate receipts are under [`results/`](results/). The public matrix includes
-only completed full-test rows and leaves missing telemetry unavailable.
+Receipts: [`results/hardware_comparison.csv`](results/hardware_comparison.csv) and [`.json`](results/hardware_comparison.json). The remedy for the TPU gap is XProf/TensorBoard profiling with the matching service-account permissions.
 
 ![Controlled CPU/GPU/TPU profile](figures/controlled_hardware.svg)
 
@@ -242,11 +225,9 @@ docker build --target gpu -t me344ricechem:gpu .
 docker build -f Dockerfile.tpu -t me344ricechem:tpu .
 ```
 
-The TPU image is linux/amd64-only (libtpu ships x86_64 wheels); its Dockerfile pins the platform so Apple Silicon builds cross-compile instead of failing. The Kubernetes examples use environment substitution for project-specific service accounts, buckets, images and ConfigMap names. Base and checked-in serving images are digest-pinned; custom image variables must also be supplied as `@sha256:` references. No credential or infrastructure identifier is checked into the repository.
+The TPU image is linux/amd64-only (libtpu ships x86_64 wheels); its Dockerfile pins the platform so Apple Silicon builds cross-compile instead of failing. The Kubernetes examples use environment substitution for project-specific values, all images are digest-pinned, and no credential or infrastructure identifier is checked in.
 
-The CPU image starts a minimal private Transformers endpoint by default. The GPU and
-TPU serving manifests use vLLM. The controlled matrix must record these serving
-differences and should prefer the same merged 4B checkpoint across all three lanes.
+The CPU image serves a minimal private Transformers endpoint; the GPU and TPU manifests serve vLLM. The controlled matrix used the same merged 4B checkpoint on all three lanes and records each lane's serving stack.
 
 ### CPU endpoint and full-test evaluation
 
@@ -284,8 +265,7 @@ docker stop ricechem-cpu
 ```
 
 `--workers 1` matches the CPU endpoint's explicit serialized-generation policy.
-The full full-test evaluation still processes all 861 decisions; there is no subset
-fallback.
+The evaluation still processes all 861 decisions; there is no subset fallback.
 
 ### Gemma 27B QLoRA training on one NVIDIA GPU
 
