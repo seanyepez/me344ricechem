@@ -191,15 +191,19 @@ One caveat on the 27B numbers. The 27B ran behind a simple server that answers o
 
 ## Engineering Mitigations
 
-- Package dependencies in immutable CPU/GPU and TPU images; do not install packages inside running pods.
-- Pin serving images and record their resolved digest.
-- Use vLLM dynamic batching for throughput-oriented grading workloads.
-- Keep preprocessing batches in host memory and transfer them per step.
-- Cache large model reads close to the accelerator.
-- Stream test prompts from the authorized client rather than storing test data with the serving system.
-- Completed: CPU, GPU and TPU utilization, peak memory, latency and throughput are captured for the same configured checkpoint path ([`results/hardware_comparison.csv`](results/hardware_comparison.csv)); TPU device-level utilization and HBM were unavailable and are reported as unavailable rather than estimated. Remaining: record checkpoint and image digests so the comparison becomes exactly binary-reproducible.
-- Treat the adapter validation gate as a deployment gate: it caught a majority-class training collapse before any deployment decision, at zero test-set cost.
-- Validate the 27B bottleneck with a batched vLLM deployment before treating its earlier throughput as a model-size result.
+Each mitigation maps to a measured bottleneck:
+
+| Bottleneck | Mitigation applied | Measured delta | Receipt |
+|---|---|---|---|
+| TPU device-memory staging | Keep batches in host NumPy memory, transfer per step | ~12 GB device memory freed; the declared batch trained at 1,690 real tokens/s | [`results/training_timing_tpu.json`](results/training_timing_tpu.json) |
+| A100 VRAM ceiling | 4-bit NF4 quantization + gradient checkpointing | the 27B trains on one 40 GB card: 3.07 h, 268 tokens/s | [`results/training_timing_27b.json`](results/training_timing_27b.json) |
+| Storage-to-accelerator I/O starvation | gcsfuse range-read file cache on every mount | model load from ~200 KB/s (hours projected) to 12.4 s | [`k8s/`](k8s/) manifests |
+| Serving serialization | vLLM dynamic batching | 8.54 to 123.87 decisions/s at concurrency 24 | [`results/hardware_comparison.csv`](results/hardware_comparison.csv) |
+| Training collapse risk | Pre-declared validation gate before any deployment decision | caught the 1-of-3 collapse; 5/5 pass under the fixed recipe | [`results/replication_summary.md`](results/replication_summary.md) |
+
+Preventive practices, no measured delta claimed: immutable digest-pinned images with nothing installed on running nodes; test prompts streamed from the authorized client and never stored with the serving system.
+
+Remaining: record checkpoint and image digests for exact binary reproduction, and validate the 27B serving bottleneck with a batched vLLM deployment before treating its throughput as a model-size result.
 
 ## Repository layout
 
