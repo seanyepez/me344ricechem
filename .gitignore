@@ -38,3 +38,7 @@ venv/
 
 # Raw telemetry may identify private infrastructure; publish reviewed summaries only.
 telemetry/raw/
+
+# Office lock files
+~$*
+**/~$*
