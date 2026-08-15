@@ -63,4 +63,4 @@ Apple Silicon and non-CUDA GPUs can reproduce the analysis and synthetic checks.
 
 ## Claim boundary
 
-The canonical result measures held-out responses to questions and rubrics represented in training. It does not establish transfer to a new assessment. The next preregistered extension is leave-one-question-out evaluation across four folds and multiple seeds, followed by a total-cost comparison between per-assessment tuning and general-purpose frontier inference.
+The canonical result measures held-out responses to questions and rubrics represented in training. It does not establish transfer to a new assessment, and the encoder-protocol leave-one-question-out replication now quantifies that gap by measurement: 55.7-68.3% agreement on unseen questions across four folds and five seeds (see `results/replication_summary.md`). The next extension applies the same design to the fine-tuned decoder models, followed by a total-cost comparison between per-assessment tuning and general-purpose frontier inference.
