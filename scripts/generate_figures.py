@@ -35,13 +35,13 @@ def text(x: float, y: float, value: object, *, size: int = 18, fill: str = INK,
     )
 
 
-def svg_document(parts: list[str]) -> str:
+def svg_document(parts: list[str], height: int = 960) -> str:
     body = "\n    ".join(parts)
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" '
-        'width="1200" height="960">\n'
-        '  <rect width="1200" height="960" fill="#FFFFFF"/>\n'
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 {height}" '
+        f'width="1200" height="{height}">\n'
+        f'  <rect width="1200" height="{height}" fill="#FFFFFF"/>\n'
         '  <g font-family="Manrope, Arial, sans-serif">\n'
         f'    {body}\n'
         '  </g>\n'
@@ -293,12 +293,61 @@ def controlled_hardware_svg(receipt: dict) -> str:
                       f"TPU {tpu_1:.2f} → {tpu_24:.2f}/s ({tpu_24/tpu_1:.1f}×)",
                       size=18, fill="#2B63B4", weight=700))
     parts.append(text(64, 900,
-                      "CPU c24 incomplete · checkpoint/image hashes missing · TPU device telemetry unavailable",
+                      "CPU c24 halted (memory/tunnel pressure) — a concluded serving finding · checkpoint/image hashes missing",
                       size=15, fill=MUTED))
     parts.append(text(64, 930,
                       "4B agreement remained ≈72%; this profile measures the systems lane, not deployment readiness.",
                       size=16, fill=GREEN, weight=700))
-    return svg_document(parts)
+
+    # Measured utilization / peak memory / latency panel (values from the same receipt).
+    parts.append(f'<line x1="64" y1="962" x2="1136" y2="962" stroke="{GRID}" stroke-width="2"/>')
+    parts.append(text(64, 1002, "MEASURED UTILIZATION · PEAK MEMORY · LATENCY (CONCURRENCY 1)",
+                      size=22, fill=GREEN, weight=700))
+    ut0, ut1 = 330.0, 680.0
+    mm0, mm1 = 760.0, 1110.0
+    parts.append(text((ut0 + ut1) / 2, 1036, "Mean chip utilization (0-100%)", size=15,
+                      fill=MUTED, anchor="middle"))
+    parts.append(text((mm0 + mm1) / 2, 1036, "Peak memory (0-40 GB)", size=15,
+                      fill=MUTED, anchor="middle"))
+    mem_unit = {"16-vCPU": "RSS", "A100 40 GB": "VRAM", "TPU v5e-8": ""}
+    for index, (hardware, label, color) in enumerate(lanes):
+        row = rows[(hardware, 1)]
+        y = 1076 + index * 74
+        parts.append(text(64, y + 6, label.split(" · ")[0], size=19, weight=700))
+        util = row.get("mean_utilization_pct")
+        mem = row.get("peak_memory_gb")
+        for (t0, t1, value, cap, suffix) in ((ut0, ut1, util, 100.0, "%"),
+                                             (mm0, mm1, mem, 40.0, " GB")):
+            parts.append(f'<line x1="{t0}" y1="{y}" x2="{t1}" y2="{y}" '
+                         'stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>')
+            if value not in (None, ""):
+                v = float(value)
+                x = t0 + min(v / cap, 1.0) * (t1 - t0)
+                parts.append(f'<line x1="{t0}" y1="{y}" x2="{x:.1f}" y2="{y}" '
+                             f'stroke="{color}" stroke-width="9" stroke-linecap="round"/>')
+                unit = mem_unit[hardware] if suffix == " GB" else ""
+                parts.append(text(x + 12, y + 6, f"{v:g}{suffix} {unit}".strip(),
+                                  size=15, fill=color, weight=700))
+            else:
+                parts.append(f'<rect x="{t0}" y="{y - 8}" width="{t1 - t0}" height="16" rx="8" '
+                             f'fill="none" stroke="{MUTED}" stroke-width="1.5" '
+                             'stroke-dasharray="6 5"/>')
+                parts.append(text((t0 + t1) / 2, y + 5, "unavailable — not estimated",
+                                  size=13, fill=MUTED, anchor="middle"))
+
+    def fmt_lat(row: dict) -> str:
+        p50, p95 = float(row["latency_p50_ms"]), float(row["latency_p95_ms"])
+        if p50 >= 1000:
+            return f"{p50 / 1000:.2f} / {p95 / 1000:.2f} s"
+        return f"{p50:.0f} / {p95:.0f} ms"
+
+    parts.append(text(64, 1296, "Latency p50 / p95 per decision:", size=16, fill=MUTED))
+    parts.append(text(330, 1296,
+                      f'CPU {fmt_lat(rows[("16-vCPU", 1)])} · '
+                      f'A100 {fmt_lat(rows[("A100 40 GB", 1)])} · '
+                      f'TPU {fmt_lat(rows[("TPU v5e-8", 1)])}',
+                      size=16, fill=INK, weight=700))
+    return svg_document(parts, height=1330)
 
 
 def expected_figures() -> dict[str, str]:
