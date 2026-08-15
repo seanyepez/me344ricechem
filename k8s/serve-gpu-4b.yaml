@@ -47,5 +47,6 @@ spec:
               bucketName: ${MODEL_BUCKET}
               mountOptions: "implicit-dirs"
               fileCacheCapacity: 40Gi
+              fileCacheForRangeRead: "true"
         - name: dshm
           emptyDir: { medium: Memory, sizeLimit: 30Gi }

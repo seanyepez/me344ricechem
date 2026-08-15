@@ -54,6 +54,7 @@ spec:
               bucketName: ${MODEL_BUCKET}
               mountOptions: "implicit-dirs"
               fileCacheCapacity: 100Gi
+              fileCacheForRangeRead: "true"
         - name: dshm
           emptyDir: { medium: Memory, sizeLimit: 60Gi }
         - name: xla-cache
