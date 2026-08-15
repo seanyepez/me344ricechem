@@ -137,7 +137,7 @@ completed concurrency-1 profile is:
 |---|---:|---:|---:|---|
 | 16-vCPU | 0.28 | 50.9 min | 3.32 / 5.57 s | 95.1% mean CPU; 18.0 GB peak RSS |
 | A100 40 GB | 8.54 | 100.8 s | 116 / 129 ms | 19.5% mean GPU; 35.6 GB VRAM |
-| TPU v5e-8 | 11.39 | 75.6 s | 82 / 104 ms | Device utilization/HBM unavailable; not estimated |
+| TPU v5e-8 | 11.39 | 75.6 s | 82 / 104 ms | 12.8% mean duty cycle; 10.2 GiB peak HBM per chip |
 
 Relative to the CPU baseline at concurrency 1, the A100 delivered **30.5×** and the TPU **40.7×**.
 
@@ -151,9 +151,9 @@ Relative to the CPU baseline at concurrency 1, the A100 delivered **30.5×** and
 |---|---|---|---|
 | 16-vCPU | 95.1% mean CPU — captured | 18.0 GB RSS — captured | p50/p95 captured |
 | A100 40 GB | 19.5% mean GPU — captured (c=1) | 35.6 GB VRAM — captured | p50/p95 captured |
-| TPU v5e-8 | device counters unavailable — disclosed, not estimated | HBM unavailable; 54 GB peak host memory captured | p50/p95 captured |
+| TPU v5e-8 | 12.8% mean duty cycle (c=1), 13.9% (c=24), peak 24.8% — captured with tpu-info | 10.2 GiB peak HBM per chip of 15.75; 54 GB peak host memory | p50/p95 captured |
 
-Receipts: [`results/hardware_comparison.csv`](results/hardware_comparison.csv) and [`.json`](results/hardware_comparison.json). The remedy for the TPU gap is XProf/TensorBoard profiling with the matching service-account permissions.
+Receipts: [`results/hardware_comparison.csv`](results/hardware_comparison.csv) and [`.json`](results/hardware_comparison.json). TPU device counters were captured in-pod with tpu-info (libtpu) on a same-configuration rerun whose accuracy matched the recorded runs exactly (72.36 / 72.24).
 
 ![Controlled CPU/GPU/TPU profile](figures/controlled_hardware.svg)
 
@@ -171,7 +171,7 @@ The primary operational bottleneck was **accelerator memory capacity**, hit thre
 
 One caveat on the 27B numbers. The 27B ran behind a simple server that answers one request at a time. The 4B models ran behind vLLM, which batches many requests together. So the 27B's low throughput partly measures its server, not the model. We have not yet re-run the 27B behind a batching server, so we do not know how much of the gap the server explains. Read its number as how this deployment performed, not as the fastest a 27B can go on an A100.
 
-**Where each lane saturates.** The CPU lane is compute-bound: 95.1% mean utilization at concurrency 1. The A100 at concurrency 1 is request-serialization-bound (19.5% utilization), which is exactly why batching recovers 14.5× (8.54 → 123.87 decisions/s at c=24). The TPU wins single-stream latency (p50 82 ms) but scales less under concurrency 24 (98.41/s; p95 104 → 516 ms); with device counters unavailable, this is consistent with the configured deployment (8-way tensor-parallel collectives, the batched-token cap, XLA recompilation on new batch shapes) and is reported as a configured-deployment observation, never a universal hardware ranking. The unbatched CPU endpoint could not sustain concurrency 24 at all — it halted under host memory pressure and port-forward tunnel instability — a concluded finding that batching engines are what make concurrency survivable, not merely faster.
+**Where each lane saturates.** The CPU lane is compute-bound: 95.1% mean utilization at concurrency 1. The A100 at concurrency 1 is request-serialization-bound (19.5% utilization), which is exactly why batching recovers 14.5× (8.54 → 123.87 decisions/s at c=24). The TPU wins single-stream latency (p50 82 ms) but scales less under concurrency 24 (98.41/s; p95 104 → 516 ms). Device counters, captured with tpu-info on a same-configuration rerun, confirm the lane is configuration-bound rather than silicon-bound: 12.8% mean duty cycle at c=1, peaking at 24.8% under c=24, with HBM at 10.2 of 15.75 GiB per chip. Still a configured-deployment observation, never a universal hardware ranking. The unbatched CPU endpoint could not sustain concurrency 24 at all — it halted under host memory pressure and port-forward tunnel instability — a concluded finding that batching engines are what make concurrency survivable, not merely faster.
 
 ## Engineering Mitigations
 
@@ -365,7 +365,6 @@ Future work:
 
 - Leave-one-question-out evaluation of the fine-tuned Gemma models — the decisive transfer test.
 - A batched 27B endpoint (vLLM), to separate server design from model size in the observed throughput.
-- TPU device utilization and HBM capture via XProf/TensorBoard profiling with the matching service-account permissions.
 - A total-cost comparison: assignment-specific tuning (labeling, training, validation, serving, monitoring) versus the marginal inference cost of a general-purpose frontier model.
 
 ## Limitations

@@ -2,5 +2,5 @@ hardware,checkpoint,n,concurrency,decisions_per_second,wall_seconds,latency_p50_
 16-vCPU,merged-ft-gemma3-4b (hash unavailable),861,1,0.28,3054.2,3315.3,5571.6,72.71,95.1,18.0,,process CPU and RSS during the full run,complete
 A100 40 GB,merged-ft-gemma3-4b (hash unavailable),861,1,8.54,100.8,116.1,128.6,72.01,19.5,35.6,,coarse NVML GPU utilization and VRAM series during the full run,complete
 A100 40 GB,merged-ft-gemma3-4b (hash unavailable),861,24,123.87,7.0,187.7,225.8,72.13,,,,run shorter than telemetry sampling interval,complete
-TPU v5e-8,merged-ft-gemma3-4b (hash unavailable),861,1,11.39,75.6,82.2,104.0,72.36,,,,host CPU and memory only; TPU utilization and HBM unavailable,complete
-TPU v5e-8,merged-ft-gemma3-4b (hash unavailable),861,24,98.41,8.7,219.6,516.4,72.24,,,,TPU utilization and HBM unavailable,complete
+TPU v5e-8,merged-ft-gemma3-4b (hash unavailable),861,1,11.39,75.6,82.2,104.0,72.36,12.8,10.2,,tpu-info (libtpu) sampled in-pod during a same-configuration rerun; accuracy signature matched the recorded run exactly; HBM is per chip of 15.75 GiB,complete
+TPU v5e-8,merged-ft-gemma3-4b (hash unavailable),861,24,98.41,8.7,219.6,516.4,72.24,13.9,10.9,,tpu-info (libtpu) sampled in-pod during a same-configuration rerun; accuracy signature matched the recorded run exactly; HBM is per chip of 15.75 GiB; peak duty cycle 24.8%,complete

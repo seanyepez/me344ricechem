@@ -45,7 +45,7 @@
     <text x="464.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >19.5% mean utilization · 35.6 GB VRAM</text>
     <rect x="824" y="704" width="344" height="98" rx="16" fill="#EAF2FF"/>
     <text x="844.0" y="738.0" text-anchor="start" font-size="18" font-weight="700" fill="#2B63B4" >TPU telemetry</text>
-    <text x="844.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >Device utilization / HBM unavailable</text>
+    <text x="844.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >12.8% mean duty · 10.2 GiB peak HBM/chip</text>
     <text x="64.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#1D6B3C" >CONCURRENCY 1 → 24</text>
     <text x="330.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#6543A4" >A100 8.54 → 123.87/s (14.5×)</text>
     <text x="700.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#2B63B4" >TPU 11.39 → 98.41/s (8.6×)</text>
@@ -71,11 +71,11 @@
     <text x="1083.5" y="1156.0" text-anchor="start" font-size="15" font-weight="700" fill="#7A55C4" >35.6 GB VRAM</text>
     <text x="64.0" y="1230.0" text-anchor="start" font-size="19" font-weight="700" fill="#1F2937" >TPU v5e-8</text>
     <line x1="330.0" y1="1224" x2="680.0" y2="1224" stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>
-    <rect x="330.0" y="1216" width="350.0" height="16" rx="8" fill="none" stroke="#667085" stroke-width="1.5" stroke-dasharray="6 5"/>
-    <text x="505.0" y="1229.0" text-anchor="middle" font-size="13" font-weight="400" fill="#667085" >unavailable — not estimated</text>
+    <line x1="330.0" y1="1224" x2="374.8" y2="1224" stroke="#4285F4" stroke-width="9" stroke-linecap="round"/>
+    <text x="386.8" y="1230.0" text-anchor="start" font-size="15" font-weight="700" fill="#4285F4" >12.8%</text>
     <line x1="760.0" y1="1224" x2="1110.0" y2="1224" stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>
-    <rect x="760.0" y="1216" width="350.0" height="16" rx="8" fill="none" stroke="#667085" stroke-width="1.5" stroke-dasharray="6 5"/>
-    <text x="935.0" y="1229.0" text-anchor="middle" font-size="13" font-weight="400" fill="#667085" >unavailable — not estimated</text>
+    <line x1="760.0" y1="1224" x2="849.2" y2="1224" stroke="#4285F4" stroke-width="9" stroke-linecap="round"/>
+    <text x="861.2" y="1230.0" text-anchor="start" font-size="15" font-weight="700" fill="#4285F4" >10.2 GB</text>
     <text x="64.0" y="1296.0" text-anchor="start" font-size="16" font-weight="400" fill="#667085" >Latency p50 / p95 per decision:</text>
     <text x="330.0" y="1296.0" text-anchor="start" font-size="16" font-weight="700" fill="#1F2937" >CPU 3.32 / 5.57 s · A100 116 / 129 ms · TPU 82 / 104 ms</text>
   </g>

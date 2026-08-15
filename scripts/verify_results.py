@@ -159,8 +159,12 @@ def main() -> int:
     assert hardware["receipt_status"] == "preliminary_aggregate_partial_provenance"
     assert hardware["measurement_contract_complete"] is False
     assert hardware["checkpoint_sha"] is None
-    assert {"checkpoint_sha", "serving_image_digests", "cpu_concurrency_24",
-            "tpu_device_utilization"}.issubset(hardware["missing_fields"])
+    assert {"checkpoint_sha", "serving_image_digests",
+            "cpu_concurrency_24"}.issubset(hardware["missing_fields"])
+    assert "tpu_device_utilization" not in hardware["missing_fields"]
+    tpu1 = next(r for r in hardware["rows"] if r["hardware"] == "TPU v5e-8" and r["concurrency"] == 1)
+    require_close(tpu1["mean_utilization_pct"], 12.8, "TPU c1 mean duty cycle")
+    require_close(tpu1["peak_memory_gb"], 10.2, "TPU c1 peak per-chip HBM")
     hardware_by_key = {
         (row["hardware"], row["concurrency"]): row for row in hardware["rows"]
     }
@@ -170,7 +174,7 @@ def main() -> int:
                   "controlled A100 c1 throughput")
     require_close(hardware_by_key[("TPU v5e-8", 1)]["decisions_per_second"], 11.39,
                   "controlled TPU c1 throughput")
-    assert hardware_by_key[("TPU v5e-8", 1)]["mean_utilization_pct"] is None
+    assert hardware_by_key[("TPU v5e-8", 1)]["mean_utilization_pct"] is not None
 
     with (RESULTS / "hardware_comparison.csv").open(encoding="utf-8", newline="") as handle:
         hardware_csv = list(csv.DictReader(handle))

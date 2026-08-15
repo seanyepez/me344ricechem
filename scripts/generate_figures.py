@@ -274,7 +274,7 @@ def controlled_hardware_svg(receipt: dict) -> str:
     cards = [
         (64, "CPU telemetry", "95.1% mean utilization · 18.0 GB peak RSS", "#F0F2F4", INK),
         (444, "A100 telemetry", "19.5% mean utilization · 35.6 GB VRAM", "#F2ECFA", "#6543A4"),
-        (824, "TPU telemetry", "Device utilization / HBM unavailable", "#EAF2FF", "#2B63B4"),
+        (824, "TPU telemetry", "12.8% mean duty · 10.2 GiB peak HBM/chip", "#EAF2FF", "#2B63B4"),
     ]
     for x, heading, body, fill, color in cards:
         parts.append(f'<rect x="{x}" y="704" width="344" height="98" rx="16" '
