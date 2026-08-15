@@ -373,7 +373,7 @@
     "ft27b-bare:base27b-bare": {
       "b": 169,
       "c": 63,
-      "p": 0.0
+      "p": 2.2456642388684225e-12
     },
     "ft27b-bare:sol-cli-bare": {
       "b": 122,
@@ -383,7 +383,7 @@
     "haiku45-cli-bare:sonnet5-cli-bare": {
       "b": 180,
       "c": 100,
-      "p": 0.0
+      "p": 2.014506496056361e-06
     }
   },
   "reference_bars": [

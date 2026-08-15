@@ -1,0 +1,27 @@
+name: Public artifact verification
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run dependency-free smoke test
+        run: python3 src/smoke_test.py
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Verify public aggregate receipts
+        run: python3 scripts/verify_results.py
+      - name: Verify public repository boundary
+        run: python3 scripts/verify_public_tree.py
+      - name: Verify generated figures are current
+        run: python3 scripts/generate_figures.py --check

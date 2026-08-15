@@ -7,10 +7,11 @@ dynamic per-batch padding (length-sorted buckets) for throughput. After training
 adapter save, the SAME process (weights already resident) serves a minimal
 OpenAI-compatible endpoint so an authorized client can stream the frozen test
 manifest over a port-forward; test pairs never land on cluster storage. POST /shutdown ends the
-job cleanly.
+job cleanly and requires a bearer token whenever the server binds beyond loopback.
 """
 
 import gzip
+import hmac
 import json
 import os
 import random
@@ -26,6 +27,16 @@ from transformers import AutoTokenizer, BitsAndBytesConfig
 DATA = Path(os.environ.get("DATA_DIR", "/data"))
 MODEL_PATH = os.environ.get("MODEL_PATH", "google/gemma-3-27b-it")
 OUT = Path(os.environ.get("OUTPUT_DIR", "/outputs/ricechem-lora-adapter-27b-gpu"))
+BIND_HOST = os.environ.get("BIND_HOST", "127.0.0.1")
+PORT = int(os.environ.get("PORT", "8000"))
+SHUTDOWN_TOKEN = os.environ.get("SHUTDOWN_TOKEN")
+
+# Loopback is safe for direct execution. Container/Kubernetes callers may opt into a
+# pod-facing bind, but must then protect the process-control endpoint with a token.
+if BIND_HOST not in {"127.0.0.1", "localhost", "::1"} and not SHUTDOWN_TOKEN:
+    raise RuntimeError(
+        "SHUTDOWN_TOKEN is required when BIND_HOST is not a loopback address"
+    )
 
 BATCH_SIZE = int(os.environ.get("BATCH_SIZE", "2"))
 GRAD_ACCUM = int(os.environ.get("GRAD_ACCUM", "8"))
@@ -167,10 +178,22 @@ shutdown = threading.Event()
 class H(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/shutdown":
+            if SHUTDOWN_TOKEN:
+                supplied = self.headers.get("Authorization", "")
+                expected = f"Bearer {SHUTDOWN_TOKEN}"
+                if not hmac.compare_digest(supplied, expected):
+                    self.send_response(403)
+                    self.end_headers()
+                    self.wfile.write(b"forbidden")
+                    return
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b"bye")
             shutdown.set()
+            return
+        if self.path != "/v1/chat/completions":
+            self.send_response(404)
+            self.end_headers()
             return
         n = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(n))
@@ -204,8 +227,8 @@ class H(BaseHTTPRequestHandler):
         pass
 
 
-srv = ThreadingHTTPServer(("0.0.0.0", 8000), H)
-print("SERVE_MODE ready on :8000 (POST /shutdown to finish job)", flush=True)
+srv = ThreadingHTTPServer((BIND_HOST, PORT), H)
+print(f"SERVE_MODE ready on {BIND_HOST}:{PORT}", flush=True)
 t = threading.Thread(target=srv.serve_forever, daemon=True)
 t.start()
 shutdown.wait()

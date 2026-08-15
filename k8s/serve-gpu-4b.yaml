@@ -17,7 +17,7 @@ spec:
         cloud.google.com/gke-accelerator: nvidia-tesla-a100
       containers:
         - name: vllm
-          image: vllm/vllm-openai:v0.11.0
+          image: vllm/vllm-openai:v0.11.0@sha256:d8d39b59e909d2378ac4feeb191f7e7b6f1342477dc66b7c47cec89e9985ad8a
           command: ["vllm", "serve", "/storage/outputs/ricechem-checkpoint-4b"]
           args:
             - --host=0.0.0.0
@@ -37,7 +37,7 @@ spec:
             httpGet: { path: /v1/models, port: api }
             periodSeconds: 10
           volumeMounts:
-            - { name: storage, mountPath: /storage }
+            - { name: storage, mountPath: /storage, readOnly: true }
             - { name: dshm, mountPath: /dev/shm }
       volumes:
         - name: storage

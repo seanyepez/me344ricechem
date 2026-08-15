@@ -2,55 +2,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" width="1200" height="960">
   <rect width="1200" height="960" fill="#FFFFFF"/>
   <g font-family="Manrope, Arial, sans-serif">
-    <text x="72" y="58" font-size="22" font-weight="700" fill="#1D6B3C">BATCHED 4B SERVING</text>
-    <text x="72" y="88" font-size="18" fill="#667085">Comparable vLLM endpoints · decisions per second</text>
-    <line x1="72" y1="132" x2="72" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
-    <text x="72" y="562" text-anchor="middle" font-size="17" fill="#667085">0/s</text>
+    <text x="72.0" y="58.0" text-anchor="start" font-size="22" font-weight="700" fill="#1D6B3C" >BATCHED 4B SERVING</text>
+    <text x="72.0" y="88.0" text-anchor="start" font-size="18" font-weight="400" fill="#667085" >Comparable vLLM endpoints · decisions per second</text>
+    <line x1="72.0" y1="132" x2="72.0" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="72.0" y="562.0" text-anchor="middle" font-size="17" font-weight="400" fill="#667085" >0/s</text>
     <line x1="331.5" y1="132" x2="331.5" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
-    <text x="331.5" y="562" text-anchor="middle" font-size="17" fill="#667085">20/s</text>
-    <line x1="591" y1="132" x2="591" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
-    <text x="591" y="562" text-anchor="middle" font-size="17" fill="#667085">40/s</text>
+    <text x="331.5" y="562.0" text-anchor="middle" font-size="17" font-weight="400" fill="#667085" >20/s</text>
+    <line x1="591.0" y1="132" x2="591.0" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="591.0" y="562.0" text-anchor="middle" font-size="17" font-weight="400" fill="#667085" >40/s</text>
     <line x1="850.5" y1="132" x2="850.5" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
-    <text x="850.5" y="562" text-anchor="middle" font-size="17" fill="#667085">60/s</text>
-    <line x1="1110" y1="132" x2="1110" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
-    <text x="1110" y="562" text-anchor="middle" font-size="17" fill="#667085">80/s</text>
-    <text x="72" y="172" font-size="19" font-weight="700" fill="#1F2937">Gemma 4B fine-tuned · TPU v5e-8</text>
-    <rect x="72" y="190" width="951.1" height="34" rx="8" fill="#4285F4"/>
-    <text x="938.0" y="216" text-anchor="end" font-size="20" font-weight="700" fill="#FFFFFF">73/s</text>
-    <rect x="960" y="180" width="150" height="52" rx="12" fill="#E8F4EC"/>
-    <text x="1035" y="203" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C">CLASS SET</text>
-    <text x="1035" y="223" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C">55 sec</text>
-    <text x="72" y="290" font-size="19" font-weight="700" fill="#1F2937">Gemma 4B base · A100</text>
-    <rect x="72" y="308" width="905.7" height="34" rx="8" fill="#2467B2"/>
-    <text x="938.0" y="334" text-anchor="end" font-size="20" font-weight="700" fill="#FFFFFF">70/s</text>
-    <rect x="960" y="298" width="150" height="52" rx="12" fill="#E8F4EC"/>
-    <text x="1035" y="321" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C">CLASS SET</text>
-    <text x="1035" y="341" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C">58 sec</text>
-    <text x="72" y="408" font-size="19" font-weight="700" fill="#1F2937">Gemma 4B fine-tuned · A100</text>
-    <rect x="72" y="426" width="657.8" height="34" rx="8" fill="#76A7FA"/>
-    <text x="744.8" y="452" text-anchor="start" font-size="20" font-weight="700" fill="#1F2937">51/s</text>
-    <rect x="960" y="416" width="150" height="52" rx="12" fill="#E8F4EC"/>
-    <text x="1035" y="439" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C">CLASS SET</text>
-    <text x="1035" y="459" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C">80 sec</text>
-    <text x="72" y="622" font-size="22" font-weight="700" fill="#667085">CONTEXT, NOT HARDWARE CEILINGS</text>
-    <text x="72" y="652" font-size="18" fill="#667085">The 27B research endpoint was unbatched; Luna includes the CLI calling path.</text>
+    <text x="850.5" y="562.0" text-anchor="middle" font-size="17" font-weight="400" fill="#667085" >60/s</text>
+    <line x1="1110.0" y1="132" x2="1110.0" y2="530" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="1110.0" y="562.0" text-anchor="middle" font-size="17" font-weight="400" fill="#667085" >80/s</text>
+    <text x="72.0" y="172.0" text-anchor="start" font-size="19" font-weight="700" fill="#1F2937" >Gemma 4B fine-tuned · TPU v5e-8</text>
+    <rect x="72" y="190" width="951.6" height="34" rx="8" fill="#4285F4"/>
+    <text x="938.0" y="216.0" text-anchor="end" font-size="20" font-weight="700" fill="#FFFFFF" >73/s</text>
+    <rect x="960" y="180.0" width="150" height="52" rx="12" fill="#E8F4EC"/>
+    <text x="1035.0" y="203.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C" >CLASS SET</text>
+    <text x="1035.0" y="223.0" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C" >55 sec</text>
+    <text x="72.0" y="290.0" text-anchor="start" font-size="19" font-weight="700" fill="#1F2937" >Gemma 4B base · A100</text>
+    <rect x="72" y="308" width="905.8" height="34" rx="8" fill="#2467B2"/>
+    <text x="938.0" y="334.0" text-anchor="end" font-size="20" font-weight="700" fill="#FFFFFF" >70/s</text>
+    <rect x="960" y="298.0" width="150" height="52" rx="12" fill="#E8F4EC"/>
+    <text x="1035.0" y="321.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C" >CLASS SET</text>
+    <text x="1035.0" y="341.0" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C" >58 sec</text>
+    <text x="72.0" y="408.0" text-anchor="start" font-size="19" font-weight="700" fill="#1F2937" >Gemma 4B fine-tuned · A100</text>
+    <rect x="72" y="426" width="657.6" height="34" rx="8" fill="#76A7FA"/>
+    <text x="715.6" y="452.0" text-anchor="end" font-size="20" font-weight="700" fill="#FFFFFF" >51/s</text>
+    <rect x="960" y="416.0" width="150" height="52" rx="12" fill="#E8F4EC"/>
+    <text x="1035.0" y="439.0" text-anchor="middle" font-size="13" font-weight="700" fill="#1D6B3C" >CLASS SET</text>
+    <text x="1035.0" y="459.0" text-anchor="middle" font-size="18" font-weight="700" fill="#1D6B3C" >80 sec</text>
+    <text x="72.0" y="622.0" text-anchor="start" font-size="22" font-weight="700" fill="#667085" >CONTEXT, NOT HARDWARE CEILINGS</text>
+    <text x="72.0" y="652.0" text-anchor="start" font-size="18" font-weight="400" fill="#667085" >The 27B research endpoint was unbatched; Luna includes the CLI calling path.</text>
     <rect x="72" y="696" width="330" height="158" rx="16" fill="#F7F8F6" stroke="#D9E1E7" stroke-width="2"/>
     <circle cx="100" cy="728" r="9" fill="#4285F4"/>
-    <text x="120" y="735" font-size="18" font-weight="700" fill="#1F2937">Gemma 27B fine-tuned</text>
-    <text x="96" y="772" font-size="16" fill="#667085">A100 · unbatched prototype</text>
-    <text x="96" y="824" font-size="25" font-weight="700" fill="#1F2937">1.3/s</text>
-    <text x="188" y="824" font-size="17" fill="#667085">· class set in 51 min</text>
+    <text x="120.0" y="735.0" text-anchor="start" font-size="18" font-weight="700" fill="#1F2937" >Gemma 27B fine-tuned</text>
+    <text x="96.0" y="772.0" text-anchor="start" font-size="16" font-weight="400" fill="#667085" >A100 · unbatched prototype</text>
+    <text x="96.0" y="824.0" text-anchor="start" font-size="25" font-weight="700" fill="#1F2937" >1.3/s</text>
+    <text x="188.0" y="824.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >· class set in 51 min</text>
     <rect x="427" y="696" width="330" height="158" rx="16" fill="#F7F8F6" stroke="#D9E1E7" stroke-width="2"/>
     <circle cx="455" cy="728" r="9" fill="#2467B2"/>
-    <text x="475" y="735" font-size="18" font-weight="700" fill="#1F2937">Gemma 27B base</text>
-    <text x="451" y="772" font-size="16" fill="#667085">A100 · unbatched prototype</text>
-    <text x="451" y="824" font-size="25" font-weight="700" fill="#1F2937">1.2/s</text>
-    <text x="543" y="824" font-size="17" fill="#667085">· class set in 54 min</text>
+    <text x="475.0" y="735.0" text-anchor="start" font-size="18" font-weight="700" fill="#1F2937" >Gemma 27B base</text>
+    <text x="451.0" y="772.0" text-anchor="start" font-size="16" font-weight="400" fill="#667085" >A100 · unbatched prototype</text>
+    <text x="451.0" y="824.0" text-anchor="start" font-size="25" font-weight="700" fill="#1F2937" >1.2/s</text>
+    <text x="543.0" y="824.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >· class set in 54 min</text>
     <rect x="782" y="696" width="330" height="158" rx="16" fill="#F7F8F6" stroke="#D9E1E7" stroke-width="2"/>
     <circle cx="810" cy="728" r="9" fill="#E8683A"/>
-    <text x="830" y="735" font-size="18" font-weight="700" fill="#1F2937">GPT-5.6 Luna</text>
-    <text x="806" y="772" font-size="16" fill="#667085">API via CLI</text>
-    <text x="806" y="824" font-size="25" font-weight="700" fill="#1F2937">1.3/s</text>
-    <text x="898" y="824" font-size="17" fill="#667085">· class set in 52 min</text>
+    <text x="830.0" y="735.0" text-anchor="start" font-size="18" font-weight="700" fill="#1F2937" >GPT-5.6 Luna</text>
+    <text x="806.0" y="772.0" text-anchor="start" font-size="16" font-weight="400" fill="#667085" >API via CLI</text>
+    <text x="806.0" y="824.0" text-anchor="start" font-size="25" font-weight="700" fill="#1F2937" >1.3/s</text>
+    <text x="898.0" y="824.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >· class set in 52 min</text>
   </g>
 </svg>

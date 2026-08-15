@@ -1,0 +1,19 @@
+{
+  "lane": "cpu-single-node",
+  "model_id": "FacebookAI/roberta-large-mnli",
+  "cpu_model": "AMD EPYC 7B13",
+  "cores_visible": 32,
+  "torch_threads": 16,
+  "batch_size": 16,
+  "sequence_length": 256,
+  "dtype": "fp32",
+  "model_load_seconds": 13.9,
+  "inference_pairs_per_second": 3.32,
+  "training_steps_per_second": 0.0656,
+  "training_seconds_per_step": 15.25,
+  "estimated_full_protocol_hours_10_epochs": 17.8,
+  "peak_rss_gb": 30.0,
+  "a100_reference_steps_per_second": 1.87,
+  "a100_training_speedup_over_cpu": 28.5,
+  "claim_boundary": "This is the controlled CPU-to-A100 encoder reference. It is not a same-checkpoint comparison with the Gemma TPU lane."
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" width="1200" height="960">
+  <rect width="1200" height="960" fill="#FFFFFF"/>
+  <g font-family="Manrope, Arial, sans-serif">
+    <text x="64.0" y="62.0" text-anchor="start" font-size="25" font-weight="700" fill="#1D6B3C" >CONTROLLED FULL-TEST HARDWARE PROFILE</text>
+    <text x="64.0" y="96.0" text-anchor="start" font-size="19" font-weight="400" fill="#667085" >Same merged 4B checkpoint path · 861 decisions · concurrency 1</text>
+    <line x1="330.0" y1="142" x2="330.0" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="330.0" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >0.2</text>
+    <line x1="485.2" y1="142" x2="485.2" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="485.2" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >0.5</text>
+    <line x1="602.6" y1="142" x2="602.6" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="602.6" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >1</text>
+    <line x1="720.0" y1="142" x2="720.0" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="720.0" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >2</text>
+    <line x1="875.2" y1="142" x2="875.2" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="875.2" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >5</text>
+    <line x1="992.6" y1="142" x2="992.6" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="992.6" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >10</text>
+    <line x1="1110.0" y1="142" x2="1110.0" y2="602" stroke="#D9E1E7" stroke-width="1.5"/>
+    <text x="1110.0" y="630.0" text-anchor="middle" font-size="15" font-weight="400" fill="#667085" >20</text>
+    <text x="720.0" y="662.0" text-anchor="middle" font-size="18" font-weight="400" fill="#667085" >Rubric decisions per second · log scale</text>
+    <text x="64.0" y="218.0" text-anchor="start" font-size="22" font-weight="700" fill="#1F2937" >16-vCPU · Transformers</text>
+    <text x="64.0" y="250.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >0.28/s · 3054.2 sec</text>
+    <line x1="330.0" y1="232" x2="1110.0" y2="232" stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>
+    <line x1="330.0" y1="232" x2="387.0" y2="232" stroke="#7A8797" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="387.0" cy="232" r="18" fill="#7A8797" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="413.0" y="216.0" text-anchor="start" font-size="17" font-weight="700" fill="#7A8797" >1.0× vs CPU</text>
+    <text x="64.0" y="366.0" text-anchor="start" font-size="22" font-weight="700" fill="#1F2937" >A100 40 GB · vLLM</text>
+    <text x="64.0" y="398.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >8.54/s · 100.8 sec</text>
+    <line x1="330.0" y1="380" x2="1110.0" y2="380" stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>
+    <line x1="330.0" y1="380" x2="965.9" y2="380" stroke="#7A55C4" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="965.9" cy="380" r="18" fill="#7A55C4" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="991.9" y="364.0" text-anchor="start" font-size="17" font-weight="700" fill="#7A55C4" >30.5× vs CPU</text>
+    <text x="64.0" y="514.0" text-anchor="start" font-size="22" font-weight="700" fill="#1F2937" >TPU v5e-8 · vLLM-TPU</text>
+    <text x="64.0" y="546.0" text-anchor="start" font-size="17" font-weight="400" fill="#667085" >11.39/s · 75.6 sec</text>
+    <line x1="330.0" y1="528" x2="1110.0" y2="528" stroke="#E9EDF2" stroke-width="9" stroke-linecap="round"/>
+    <line x1="330.0" y1="528" x2="1014.6" y2="528" stroke="#4285F4" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="1014.6" cy="528" r="18" fill="#4285F4" stroke="#FFFFFF" stroke-width="4"/>
+    <text x="1040.6" y="512.0" text-anchor="end" font-size="17" font-weight="700" fill="#4285F4" >40.7× vs CPU</text>
+    <rect x="64" y="704" width="344" height="98" rx="16" fill="#F0F2F4"/>
+    <text x="84.0" y="738.0" text-anchor="start" font-size="18" font-weight="700" fill="#1F2937" >CPU telemetry</text>
+    <text x="84.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >95.1% mean utilization · 18.0 GB peak RSS</text>
+    <rect x="444" y="704" width="344" height="98" rx="16" fill="#F2ECFA"/>
+    <text x="464.0" y="738.0" text-anchor="start" font-size="18" font-weight="700" fill="#6543A4" >A100 telemetry</text>
+    <text x="464.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >19.5% mean utilization · 35.6 GB VRAM</text>
+    <rect x="824" y="704" width="344" height="98" rx="16" fill="#EAF2FF"/>
+    <text x="844.0" y="738.0" text-anchor="start" font-size="18" font-weight="700" fill="#2B63B4" >TPU telemetry</text>
+    <text x="844.0" y="772.0" text-anchor="start" font-size="15" font-weight="400" fill="#1F2937" >Device utilization / HBM unavailable</text>
+    <text x="64.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#1D6B3C" >CONCURRENCY 1 → 24</text>
+    <text x="330.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#6543A4" >A100 8.54 → 123.87/s (14.5×)</text>
+    <text x="700.0" y="850.0" text-anchor="start" font-size="18" font-weight="700" fill="#2B63B4" >TPU 11.39 → 98.41/s (8.6×)</text>
+    <text x="64.0" y="900.0" text-anchor="start" font-size="15" font-weight="400" fill="#667085" >CPU c24 incomplete · checkpoint/image hashes missing · TPU device telemetry unavailable</text>
+    <text x="64.0" y="930.0" text-anchor="start" font-size="16" font-weight="700" fill="#1D6B3C" >4B agreement remained ≈72%; this profile measures the systems lane, not deployment readiness.</text>
+  </g>
+</svg>

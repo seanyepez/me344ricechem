@@ -20,6 +20,7 @@ spec:
             - { name: MODEL_PATH, value: "/storage/outputs/ricechem-checkpoint-4b" }
             - { name: DEVICE, value: "cpu" }
             - { name: TORCH_DTYPE, value: "float32" }
+            - { name: BIND_HOST, value: "0.0.0.0" }
             - { name: PORT, value: "8000" }
           ports: [{ containerPort: 8000, name: api }]
           resources:

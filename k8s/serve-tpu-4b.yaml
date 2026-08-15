@@ -20,7 +20,7 @@ spec:
         cloud.google.com/gke-tpu-topology: 2x4
       containers:
         - name: vllm
-          image: vllm/vllm-tpu:v0.24.0
+          image: vllm/vllm-tpu:v0.24.0@sha256:7e7e57dcb4ea5ae31d6d9edd0eb0a6c8951781412f3086c8058bc1916e903333
           command: ["vllm", "serve", "/storage/outputs/ricechem-checkpoint-4b"]
           args:
             - --host=0.0.0.0
@@ -30,7 +30,7 @@ spec:
             - --max-num-seqs=128
             - --max-num-batched-tokens=4096
           env:
-            - { name: VLLM_XLA_CACHE_PATH, value: "/storage/outputs/xla-cache-4b" }
+            - { name: VLLM_XLA_CACHE_PATH, value: "/xla-cache" }
           ports: [{ containerPort: 8000, name: api }]
           resources:
             requests: { google.com/tpu: "8", memory: 100Gi }
@@ -43,7 +43,8 @@ spec:
             httpGet: { path: /v1/models, port: api }
             periodSeconds: 10
           volumeMounts:
-            - { name: storage, mountPath: /storage }
+            - { name: storage, mountPath: /storage, readOnly: true }
+            - { name: xla-cache, mountPath: /xla-cache }
             - { name: dshm, mountPath: /dev/shm }
       volumes:
         - name: storage
@@ -55,3 +56,5 @@ spec:
               fileCacheCapacity: 100Gi
         - name: dshm
           emptyDir: { medium: Memory, sizeLimit: 60Gi }
+        - name: xla-cache
+          emptyDir: { sizeLimit: 40Gi }

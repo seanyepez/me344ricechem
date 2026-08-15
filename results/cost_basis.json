@@ -1,0 +1,147 @@
+{
+  "status": "provisional_api_equivalent_proxy",
+  "snapshot_date": "2026-08-13",
+  "boundary": [
+    "These values are reproducible cost proxies, not invoices or total operating cost.",
+    "The input-token value is a character-based approximation: mean prompt characters divided by 3.7.",
+    "Output plus reasoning token means came from CLI usage envelopes on at least six real test prompts per API model; variance is not represented here.",
+    "Official live pricing URLs are recorded below, but immutable page captures were not archived in this repository; historical price provenance is therefore limited.",
+    "API values use first-party standard global list rates with no batch discount, prompt-cache adjustment, fast-mode or data-residency multiplier, or tool charge.",
+    "The A100 proxy uses the published a2-highgpu-1g reference list rate shown for us-central1; it does not represent the measured run region or an invoice.",
+    "Self-hosted values cover active instance time only and exclude idle capacity, storage, networking, orchestration, training, labeling, validation, monitoring, and human review."
+  ],
+  "workload": {
+    "canonical_test_decisions": 861,
+    "mean_prompt_characters": 1013.4982578397213,
+    "characters_per_input_token_proxy": 3.7,
+    "input_tokens_per_decision_proxy": 273.9184480647895
+  },
+  "formulas": {
+    "api_cost_per_1k_usd": "((input_tokens_proxy * input_usd_per_million) + (mean_output_reasoning_tokens * output_usd_per_million)) / 1000",
+    "self_hosted_cost_per_1k_usd": "hourly_instance_rate_usd / (decisions_per_second * 3600) * 1000"
+  },
+  "pricing_sources": {
+    "google_a2_reference": {
+      "url": "https://cloud.google.com/products/compute/pricing/accelerator-optimized",
+      "accessed_date": "2026-08-13",
+      "note": "Official accelerator-optimized VM list pricing; the $3.67 proxy is the rounded us-central1 a2-highgpu-1g on-demand reference rate."
+    },
+    "google_tpu_v5e": {
+      "url": "https://cloud.google.com/tpu/pricing",
+      "accessed_date": "2026-08-13",
+      "note": "Official TPU list pricing; v5e is $1.20 per chip-hour in us-west4, so eight chips are $9.60 per hour."
+    },
+    "openai_gpt_5_6_price_update": {
+      "url": "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/",
+      "accessed_date": "2026-08-13",
+      "note": "Official July 30, 2026 rate update for Luna and Terra; Sol remained at its launch rate."
+    },
+    "anthropic_model_pricing": {
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "accessed_date": "2026-08-13",
+      "note": "Official first-party standard global token rates. Sonnet 5 was $2/$10 per MTok on the snapshot date."
+    }
+  },
+  "rate_snapshots": {
+    "A100 40 GB": {
+      "usd_per_hour": 3.67,
+      "reference_machine_type": "a2-highgpu-1g",
+      "reference_region": "us-central1",
+      "rate_kind": "rounded on-demand reference list rate",
+      "source_key": "google_a2_reference"
+    },
+    "TPU v5e-8": {
+      "usd_per_hour": 9.6,
+      "chips": 8,
+      "usd_per_chip_hour": 1.2,
+      "region": "us-west4",
+      "rate_kind": "on-demand list-rate snapshot",
+      "source_key": "google_tpu_v5e"
+    },
+    "GPT-5.6 Luna": {
+      "input_usd_per_million": 0.2,
+      "output_usd_per_million": 1.2,
+      "mean_output_reasoning_tokens": 443,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard list rate",
+      "source_key": "openai_gpt_5_6_price_update"
+    },
+    "GPT-5.6 Terra": {
+      "input_usd_per_million": 2.0,
+      "output_usd_per_million": 12.0,
+      "mean_output_reasoning_tokens": 175,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard list rate",
+      "source_key": "openai_gpt_5_6_price_update"
+    },
+    "GPT-5.6 Sol": {
+      "input_usd_per_million": 5.0,
+      "output_usd_per_million": 30.0,
+      "mean_output_reasoning_tokens": 124,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard list rate",
+      "source_key": "openai_gpt_5_6_price_update"
+    },
+    "Claude Sonnet 5": {
+      "input_usd_per_million": 2.0,
+      "output_usd_per_million": 10.0,
+      "mean_output_reasoning_tokens": 348,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard global list rate",
+      "source_key": "anthropic_model_pricing"
+    },
+    "Claude Opus 5": {
+      "input_usd_per_million": 5.0,
+      "output_usd_per_million": 25.0,
+      "mean_output_reasoning_tokens": 226,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard global list rate",
+      "source_key": "anthropic_model_pricing"
+    },
+    "Claude Haiku 4.5": {
+      "input_usd_per_million": 1.0,
+      "output_usd_per_million": 5.0,
+      "mean_output_reasoning_tokens": 1977,
+      "usage_sample_n_min": 6,
+      "rate_kind": "first-party standard global list rate",
+      "source_key": "anthropic_model_pricing"
+    }
+  },
+  "self_hosted_rows": [
+    {
+      "name": "Gemma 4B base",
+      "result_label": "base-gpu-bare",
+      "hardware": "A100 40 GB",
+      "decisions_per_second": 69.81,
+      "cost_per_1k_usd": 0.0146
+    },
+    {
+      "name": "Gemma 4B fine-tuned (A100)",
+      "result_label": "ft-gpu-bare",
+      "hardware": "A100 40 GB",
+      "decisions_per_second": 50.68,
+      "cost_per_1k_usd": 0.0201
+    },
+    {
+      "name": "Gemma 4B fine-tuned (TPU)",
+      "result_label": "ft-tpu-bare",
+      "hardware": "TPU v5e-8",
+      "decisions_per_second": 73.34,
+      "cost_per_1k_usd": 0.0364
+    },
+    {
+      "name": "Gemma 27B fine-tuned†",
+      "result_label": "ft27b-bare",
+      "hardware": "A100 40 GB",
+      "decisions_per_second": 1.33,
+      "cost_per_1k_usd": 0.7665
+    },
+    {
+      "name": "Gemma 27B base†",
+      "result_label": "base27b-bare",
+      "hardware": "A100 40 GB",
+      "decisions_per_second": 1.24,
+      "cost_per_1k_usd": 0.8221
+    }
+  ]
+}

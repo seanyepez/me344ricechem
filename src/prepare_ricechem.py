@@ -23,6 +23,7 @@ FROZEN_SHA16 = {
     "valid.csv": "76d10ee687627490",
     "test.csv": "ce0f4a0b6aec87e5",
 }
+FROZEN_QUESTION_RUBRICS_SHA16 = "7d470222b22c95e5"
 
 PROMPT_TEMPLATE = (
     "You are grading one rubric item for a college general chemistry exam.\n\n"
@@ -35,6 +36,54 @@ PROMPT_TEMPLATE = (
 
 def sha16(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()[:16]
+
+
+def verify_sha16(path: Path, expected: str) -> None:
+    """Raise before emitting data when an authorized input has drifted."""
+    if not path.is_file():
+        raise ValueError(f"missing required input: {path}")
+    actual = sha16(path)
+    if actual != expected:
+        raise ValueError(
+            f"{path.name} sha16 {actual} != frozen {expected}"
+        )
+
+
+def _canonical_text(value: str) -> str:
+    """Canonicalize transport-only differences without changing answer content."""
+    return value.replace("\r\n", "\n").replace("\r", "\n").strip()
+
+
+def _stable_id(kind: str, fields: dict) -> str:
+    payload = json.dumps(
+        fields, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return f"{kind}_{hashlib.sha256(payload).hexdigest()[:24]}"
+
+
+def make_example_ids(qid: str, premise: str, item_idx: int, hypothesis: str):
+    """Return stable response/example IDs without exposing answer text.
+
+    A response is the question plus the student's answer. An example is one
+    rubric decision within that response. The longer example identity includes
+    the rubric index and rubric text, so reorder or rubric drift cannot silently
+    produce a valid-looking pair.
+    """
+    canonical_premise = _canonical_text(premise)
+    canonical_hypothesis = _canonical_text(hypothesis)
+    response_id = _stable_id(
+        "response", {"qid": qid, "premise": canonical_premise}
+    )
+    example_id = _stable_id(
+        "example",
+        {
+            "qid": qid,
+            "premise": canonical_premise,
+            "item_idx": int(item_idx),
+            "hypothesis": canonical_hypothesis,
+        },
+    )
+    return response_id, example_id
 
 
 def main() -> int:
@@ -50,14 +99,21 @@ def main() -> int:
     chunks = out / "cm_chunks"
 
     # Preflight: the frozen-manifest gate. Refuse to emit from drifted inputs.
-    for name, want in FROZEN_SHA16.items():
-        got = sha16(splits / name)
-        if got != want:
-            print(f"FATAL: {name} sha16 {got} != frozen {want}", file=sys.stderr)
-            return 1
-    print("manifest hashes verified:", json.dumps(FROZEN_SHA16))
+    qr_path = base / "processed/question_rubrics.json"
+    try:
+        for name, want in FROZEN_SHA16.items():
+            verify_sha16(splits / name, want)
+        verify_sha16(qr_path, FROZEN_QUESTION_RUBRICS_SHA16)
+    except ValueError as exc:
+        print(f"FATAL: {exc}", file=sys.stderr)
+        return 1
+    verified = {
+        **FROZEN_SHA16,
+        "question_rubrics.json": FROZEN_QUESTION_RUBRICS_SHA16,
+    }
+    print("manifest hashes verified:", json.dumps(verified))
 
-    qr = json.loads((base / "processed/question_rubrics.json").read_text())
+    qr = json.loads(qr_path.read_text())
     hyp2q = {}
     for qk, v in qr.items():
         items = v["items"] if isinstance(v, dict) and "items" in v else v
@@ -65,9 +121,16 @@ def main() -> int:
             items = items.get("rubric_items", [])
         for idx, it in enumerate(items):
             t = it if isinstance(it, str) else it.get("text", "")
-            assert t not in hyp2q, f"hypothesis collision: {t[:50]}"
+            if not t:
+                print(f"FATAL: empty rubric item in question {qk}", file=sys.stderr)
+                return 1
+            if t in hyp2q:
+                print(f"FATAL: hypothesis collision: {t[:50]}", file=sys.stderr)
+                return 1
             hyp2q[t] = (f"q{int(qk)+1}", idx)
-    assert len(hyp2q) == 27, f"expected 27 items, got {len(hyp2q)}"
+    if len(hyp2q) != 27:
+        print(f"FATAL: expected 27 items, got {len(hyp2q)}", file=sys.stderr)
+        return 1
 
     out.mkdir(parents=True, exist_ok=True)
     chunks.mkdir(parents=True, exist_ok=True)
@@ -77,7 +140,12 @@ def main() -> int:
         with open(splits / f"{split}.csv", newline="") as f:
             for r in csv.DictReader(f):
                 qid, item_idx = hyp2q[r["hypothesis"]]
+                response_id, example_id = make_example_ids(
+                    qid, r["premise"], item_idx, r["hypothesis"]
+                )
                 rows_out.append({
+                    "response_id": response_id,
+                    "example_id": example_id,
                     "qid": qid,
                     "item_idx": item_idx,
                     "premise": r["premise"],
@@ -89,6 +157,10 @@ def main() -> int:
                     ),
                     "target": "TRUE" if r["label"] == "1" else "FALSE",
                 })
+        example_ids = [row["example_id"] for row in rows_out]
+        if len(set(example_ids)) != len(example_ids):
+            print(f"FATAL: duplicate example_id in {split}", file=sys.stderr)
+            return 1
         out_path = out / f"{split}.jsonl"
         with open(out_path, "w") as f:
             for row in rows_out:
@@ -97,8 +169,10 @@ def main() -> int:
         for row in rows_out:
             by_q[row["qid"]] = by_q.get(row["qid"], 0) + 1
             true_q[row["qid"]] = true_q.get(row["qid"], 0) + row["label"]
+        response_ids = {row["response_id"] for row in rows_out}
         summary[split] = {
             "n": len(rows_out),
+            "n_responses": len(response_ids),
             "true_rate": round(sum(r["label"] for r in rows_out) / len(rows_out), 4),
             "by_q": by_q,
             "always_true_acc_by_q": {q: round(true_q[q] / by_q[q], 4) for q in sorted(by_q)},

@@ -12,7 +12,7 @@ The prompt excludes the original question text to match the published encoder-ar
 - Gemma 3 4B on TPU v5e-8: LoRA rank 32, alpha 64, full-sequence loss, three epochs, batch 16, maximum length 768, AdamW learning rate 1e-3.
 - Gemma 3 27B on A100: QLoRA NF4 with double quantization and bfloat16 compute, rank 32, alpha 64, two epochs, batch 2 with gradient accumulation 8, maximum length 768, learning rate 2e-4.
 
-The 4B GPU and TPU rows are independently trained variants and therefore are not a pure hardware comparison. The separate controlled hardware run uses the same merged 4B checkpoint across CPU, GPU and TPU wherever supported.
+The 4B GPU and TPU training rows are independently trained variants and therefore are not a pure hardware comparison. The separate controlled serving run uses the same configured merged-checkpoint path across CPU, GPU and TPU wherever supported; a checkpoint hash was not captured.
 
 ## Statistical inference
 
@@ -22,7 +22,7 @@ The canonical 861-decision difference between fine-tuned Gemma 27B and Opus 5 wa
 
 ## Hardware comparison contract
 
-The ME344 matrix runs all 861 test decisions on CPU, A100 GPU and TPU v5e-8 using the same prompt, parser, temperature, output limit and checkpoint wherever the runtime permits. It records:
+The ME344 matrix runs all 861 test decisions on CPU, A100 GPU and TPU v5e-8 using the same configured prompt/parser behavior, temperature, output limit, and merged-checkpoint path wherever the runtime permits. Exact prompt, parser, checkpoint, and image hashes were not captured. The full target contract records:
 
 - end-to-end wall time and decisions per second;
 - p50 and p95 request latency;
@@ -33,6 +33,23 @@ The ME344 matrix runs all 861 test decisions on CPU, A100 GPU and TPU v5e-8 usin
 - cost basis.
 
 Unavailable telemetry is reported as unavailable rather than inferred.
+
+The frozen public receipt does **not** fulfill every field in that target contract. It
+omits model-load/XLA-compile timing, cost basis, command/batching and queue/retry receipts,
+and several immutable hashes. Those omissions are listed machine-readably in
+`results/hardware_comparison.json` rather than silently filled.
+
+### Frozen hardware receipt status
+
+The concurrency-1 lane completed all 861 decisions on 16-vCPU, A100 40 GB, and TPU
+v5e-8. A100 and TPU also completed concurrency 24; CPU concurrency 24 was still running
+when the public receipt was frozen. The rows share the test-manifest SHA16 and configured
+merged-checkpoint path. Exact checkpoint and serving-image hashes were not captured, so
+the result supports a controlled workload comparison but not exact binary reproduction.
+
+CPU process utilization/RSS and coarse A100 NVML utilization/VRAM were measured. TPU
+host telemetry was captured, but device utilization and HBM were unavailable and remain
+blank. See `results/hardware_comparison.json` for the measured-versus-missing fields.
 
 ## Data and privacy
 

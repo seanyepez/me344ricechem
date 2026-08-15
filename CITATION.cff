@@ -1,10 +1,18 @@
 cff-version: 1.2.0
-title: "Fine-tuning Gemma for RiceChem grading"
+title: "Fine-Tuning Grading Models: Accuracy, Cost Proxies, and Hardware Scaling on RiceChem"
 message: "If you use this experiment code, please cite this repository and the RiceChem dataset paper."
 type: software
+version: 0.1.0
+abstract: "A reproducible study of supervised grading-model fine-tuning, accuracy, provisional serving-cost proxies, and CPU/GPU/TPU execution on the RiceChem benchmark."
+keywords:
+  - automated grading
+  - fine-tuning
+  - RiceChem
+  - reproducibility
+  - high-performance computing
 authors:
   - family-names: "Yépez"
     given-names: "Sean"
 license: Apache-2.0
 repository-code: "https://github.com/seanyepez/me344ricechem"
-date-released: 2026-08-13
+date-released: 2026-08-14

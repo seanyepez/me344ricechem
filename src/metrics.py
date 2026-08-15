@@ -67,12 +67,72 @@ def cell_metrics(header, rows):
     return m
 
 
+def validate_paired_rows(rows_a, rows_b, require_response_id=False):
+    """Validate exact, ordered identity before any paired comparison.
+
+    Comparing only ``qid`` and ``item_idx`` is unsafe because each rubric item is
+    repeated across many responses. Stable example IDs make a reordered or
+    partially regenerated manifest fail closed instead of silently mispairing it.
+    """
+    if len(rows_a) != len(rows_b):
+        raise ValueError(
+            f"paired manifest size mismatch: {len(rows_a)} != {len(rows_b)}"
+        )
+    required = ["example_id", "label"]
+    if require_response_id:
+        required.append("response_id")
+    seen_a, seen_b = set(), set()
+    for index, (row_a, row_b) in enumerate(zip(rows_a, rows_b)):
+        for side, row in (("a", row_a), ("b", row_b)):
+            missing = [field for field in required if field not in row]
+            if missing:
+                raise ValueError(
+                    f"row {index} side {side} missing required field(s): "
+                    + ", ".join(missing)
+                )
+        example_a = row_a["example_id"]
+        example_b = row_b["example_id"]
+        if example_a in seen_a:
+            raise ValueError(f"duplicate example_id on side a: {example_a}")
+        if example_b in seen_b:
+            raise ValueError(f"duplicate example_id on side b: {example_b}")
+        seen_a.add(example_a)
+        seen_b.add(example_b)
+        if example_a != example_b:
+            raise ValueError(
+                f"example_id/order mismatch at row {index}: "
+                f"{example_a!r} != {example_b!r}"
+            )
+        if row_a["label"] != row_b["label"]:
+            raise ValueError(
+                f"label mismatch for {example_a}: "
+                f"{row_a['label']!r} != {row_b['label']!r}"
+            )
+        if require_response_id and row_a["response_id"] != row_b["response_id"]:
+            raise ValueError(
+                f"response_id mismatch for {example_a}: "
+                f"{row_a['response_id']!r} != {row_b['response_id']!r}"
+            )
+
+
+def _mcnemar_p(b, c):
+    """Two-sided exact-binomial McNemar p without display rounding."""
+    n = b + c
+    if n == 0:
+        return 1.0
+    tail = sum(math.comb(n, i) for i in range(min(b, c) + 1))
+    numerator = min(2 * tail, 1 << n)
+    p = numerator / (1 << n)
+    # IEEE-754 cannot represent arbitrarily small exact probabilities. Preserve
+    # the strict p>0 invariant rather than serializing an impossible p=0 result.
+    return p if p > 0.0 else math.nextafter(0.0, 1.0)
+
+
 def mcnemar_exact(rows_a, rows_b):
     """Exact binomial McNemar on paired correctness."""
-    assert len(rows_a) == len(rows_b)
+    validate_paired_rows(rows_a, rows_b)
     b = c = 0
     for ra, rb in zip(rows_a, rows_b):
-        assert (ra["qid"], ra["item_idx"]) == (rb["qid"], rb["item_idx"]), "manifest order mismatch"
         ca, cb = ra["pred"] == ra["label"], rb["pred"] == rb["label"]
         if ca and not cb:
             b += 1
@@ -81,9 +141,7 @@ def mcnemar_exact(rows_a, rows_b):
     n = b + c
     if n == 0:
         return {"b": 0, "c": 0, "p": 1.0}
-    k = min(b, c)
-    p = sum(math.comb(n, i) for i in range(0, k + 1)) / 2 ** n * 2
-    return {"b": b, "c": c, "p": round(min(p, 1.0), 5)}
+    return {"b": b, "c": c, "p": _mcnemar_p(b, c)}
 
 
 def main():

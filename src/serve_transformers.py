@@ -17,6 +17,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "/models/gemma-3-4b-it-merged")
+BIND_HOST = os.environ.get("BIND_HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8000"))
 DEVICE = os.environ.get("DEVICE", "cpu")
 DTYPE_NAME = os.environ.get("TORCH_DTYPE", "float32")
@@ -90,4 +91,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
+    server = ThreadingHTTPServer((BIND_HOST, PORT), Handler)
+    print(json.dumps({"event": "server_ready", "bind_host": BIND_HOST, "port": PORT}),
+          flush=True)
+    server.serve_forever()

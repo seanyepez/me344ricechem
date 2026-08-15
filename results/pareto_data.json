@@ -59,7 +59,7 @@
     "name": "Claude Sonnet 5",
     "family": "anthropic",
     "acc": 67.48,
-    "cost_per_1k_usd": 6.0418,
+    "cost_per_1k_usd": 4.0278,
     "pareto": false
   },
   {

@@ -21,6 +21,13 @@ spec:
             - { name: DATA_DIR, value: "/data" }
             - { name: MODEL_PATH, value: "/storage/models/gemma-3-27b-it" }
             - { name: OUTPUT_DIR, value: "/storage/outputs/ricechem-lora-adapter-27b-gpu" }
+            - { name: BIND_HOST, value: "0.0.0.0" }
+            - { name: PORT, value: "8000" }
+            - name: SHUTDOWN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ${SHUTDOWN_SECRET_NAME}
+                  key: token
             - { name: BATCH_SIZE, value: "2" }
             - { name: GRAD_ACCUM, value: "8" }
             - { name: MAX_LEN, value: "768" }
