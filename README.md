@@ -16,7 +16,7 @@ The repository contains only the RiceChem experiment. It does **not** contain Tr
 
 ## Start here
 
-- **Slides:** [PDF](slides/ME344_RiceChem_Option2_5_Slides.pdf) · [PPTX](slides/ME344_RiceChem_Option2_5_Slides.pptx) — five slides, the whole project in two minutes.
+- **Slides:** [PDF](slides/ME344_RiceChem_Option2_5_Slides.pdf) · [PPTX](slides/ME344_RiceChem_Option2_5_Slides.pptx)
 - **Results:** the tables below, with receipts in [`results/`](results/).
 - **Run something:** three ways in, by setup cost:
 
@@ -101,18 +101,18 @@ We replicated the experiments of [Sonkar et al. (2024)](https://arxiv.org/abs/24
 
 The practical deployment bar used throughout this study is agreement at parity with the frontier reference (about 80% on this benchmark, always subject to the single-TA-label caveat). The ~72% 4B lanes sit below that bar, so their 30-41× serving speedups are systems results, not deployment readiness; the fine-tuned 27B is the lane that clears it.
 
-### Training and observed serving
+### Training and serving
 
-| Lane | Training-loop time | Total elapsed | Training throughput | Observed inference throughput |
+| Lane | Inference throughput | Training-loop time | Total elapsed | Training throughput |
 |---|---:|---:|---:|---:|
-| Gemma 3 4B, TPU v5e-8 | 43.7 min | 44.4 min | 1,690 real tokens/s | 73.3 decisions/s |
-| Gemma 3 4B, A100 | 90.7 min | 93.2 min | 816 real tokens/s | 50.7 decisions/s |
-| Gemma 3 27B, A100 | 3.07 h | 3.18 h | 268 real tokens/s | 1.33 decisions/s† |
-| Gemma 3 4B, 16-vCPU | Not trained | Not trained | Not measured | 0.28 decisions/s‡ |
+| Gemma 3 4B, TPU v5e-8 | 73.3 decisions/s | 43.7 min | 44.4 min | 1,690 real tokens/s |
+| Gemma 3 4B, A100 | 50.7 decisions/s | 90.7 min | 93.2 min | 816 real tokens/s |
+| Gemma 3 27B, A100 | 1.33 decisions/s† | 3.07 h | 3.18 h | 268 real tokens/s |
+| Gemma 3 4B, 16-vCPU | 0.28 decisions/s‡ | Not trained | Not trained | Not measured |
 
 †The 27B endpoint used unbatched Transformers generation. The 4B endpoints used vLLM with concurrent scheduling, so this is an observed deployment result rather than a controlled hardware ceiling.
 
-‡The CPU result is the completed concurrency-1 serving profile of the same configured merged-checkpoint path. It took 3,054 seconds for all 861 decisions.
+‡The same fine-tuned 4B model served on CPU, one request at a time: 3,054 seconds (51 minutes) for all 861 decisions.
 
 ### Training stability (27B, multi-seed)
 

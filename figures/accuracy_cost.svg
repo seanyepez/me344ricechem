@@ -60,9 +60,9 @@
     <text x="1068.3" y="329.9" text-anchor="end" font-size="17" font-weight="600" fill="#1F2937" >Opus 5</text>
     <circle cx="1137.2" cy="464.3" r="10" fill="#E8683A" stroke="#FFFFFF" stroke-width="4"/>
     <text x="1123.2" y="495.3" text-anchor="end" font-size="17" font-weight="600" fill="#1F2937" >Haiku 4.5</text>
-    <line x1="764.1" y1="257.7" x2="787.1" y2="227.7" stroke="#1D6B3C" stroke-width="2.5"/>
-    <rect x="787.1" y="175.7" width="320" height="78" rx="10" fill="#E8F4EC" stroke="#1D6B3C" stroke-width="2"/>
-    <text x="803.1" y="206.7" text-anchor="start" font-size="18" font-weight="700" fill="#1D6B3C" >83.3% agreement</text>
-    <text x="803.1" y="234.7" text-anchor="start" font-size="17" font-weight="400" fill="#1D6B3C" >$0.77 proxy / 1,000 decisions</text>
+    <line x1="764.1" y1="257.7" x2="760.0" y2="227.7" stroke="#1D6B3C" stroke-width="2.5"/>
+    <rect x="760.0" y="175.7" width="420" height="78" rx="10" fill="#E8F4EC" stroke="#1D6B3C" stroke-width="2"/>
+    <text x="776.0" y="206.7" text-anchor="start" font-size="18" font-weight="700" fill="#1D6B3C" >Gemma 27B fine-tuned · 83.3% agreement</text>
+    <text x="776.0" y="234.7" text-anchor="start" font-size="17" font-weight="400" fill="#1D6B3C" >$0.77 proxy / 1,000 decisions</text>
   </g>
 </svg>

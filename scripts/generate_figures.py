@@ -147,12 +147,13 @@ def accuracy_cost_svg(pareto_rows: list[dict], report: dict) -> str:
 
     best = next(row for row in pareto_rows if row["name"] == "Gemma 27B fine-tuned†")
     x_best, y_best = xp(best["cost_per_1k_usd"]), yp(best["acc"])
-    box_x, box_y = min(x_best + 34, 810), max(y_best - 92, 175)
+    box_x, box_y = min(x_best + 34, 760), max(y_best - 92, 175)
     parts.append(f'<line x1="{x_best + 11:.1f}" y1="{y_best - 10:.1f}" '
                  f'x2="{box_x:.1f}" y2="{box_y + 52:.1f}" stroke="{GREEN}" stroke-width="2.5"/>')
-    parts.append(f'<rect x="{box_x:.1f}" y="{box_y:.1f}" width="320" height="78" rx="10" '
+    parts.append(f'<rect x="{box_x:.1f}" y="{box_y:.1f}" width="420" height="78" rx="10" '
                  f'fill="#E8F4EC" stroke="{GREEN}" stroke-width="2"/>')
-    parts.append(text(box_x + 16, box_y + 31, f'{best["acc"]:.1f}% agreement',
+    parts.append(text(box_x + 16, box_y + 31,
+                      f'Gemma 27B fine-tuned · {best["acc"]:.1f}% agreement',
                       fill=GREEN, weight=700))
     parts.append(text(box_x + 16, box_y + 59,
                       f'${best["cost_per_1k_usd"]:.2f} proxy / 1,000 decisions',
