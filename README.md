@@ -267,7 +267,7 @@ docker stop ricechem-cpu
 ```
 
 `--workers 1` matches the CPU endpoint's explicit serialized-generation policy.
-The evaluation still processes all 861 decisions; there is no subset fallback.
+The evaluation runs all 861 test decisions, never a sample.
 
 ### Gemma 27B QLoRA training on one NVIDIA GPU
 
@@ -342,7 +342,7 @@ python3 src/evaluate_endpoint.py \
   --workers 24
 ```
 
-The ME344 comparison uses all 861 frozen-test decisions; it has no subset fallback.
+Every evaluation runs all 861 test decisions, never a sample.
 
 To run the profiling notebook against the public aggregate receipts:
 
@@ -358,7 +358,7 @@ not infer missing telemetry.
 
 ## Conclusion and future work
 
-Fine-tuning shows promise on held-out responses to the same questions and rubrics used during training. It has not yet demonstrated reliable transfer to a newly authored assessment, and the cold-start replication quantifies that gap: encoders trained on three questions and tested on the unseen fourth reach only 55.7-68.3% agreement, far below the 86% same-question ceiling.
+Fine-tuning shows promise when the test set is new student responses to the same four questions and rubrics seen in training — that is what the 83.3% measures. It has not yet demonstrated reliable transfer to unseen questions, and the cold-start replication quantifies that gap: encoders trained on three of the four questions and tested on the held-out fourth reach only 55.7-68.3% agreement, far below the 86% same-question ceiling.
 
 The operating rule this study supports: meet the grading-quality threshold first, then choose the smallest configuration that returns a full assignment within a 24-hour turnaround target, then minimize cost.
 
