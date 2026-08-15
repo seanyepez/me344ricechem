@@ -6,9 +6,8 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB.svg)](https://www.python.org/)
 
-> **Sean Yépez · Stanford ME344 (Summer 2026) — Final Project, Option 2: custom domain workload (individual).**
-> Submission map: executive technical report = this README · configuration = [`Dockerfile`](Dockerfile), [`Dockerfile.tpu`](Dockerfile.tpu), [`k8s/`](k8s/) · profiling notebook = [`notebooks/hardware_profile.ipynb`](notebooks/hardware_profile.ipynb) · five-slide deck = [`slides/`](slides/) (PDF + PPTX).
-> Course tooling used (three or more required): compute — CPU, NVIDIA A100, TPU v5e-8 · orchestration — Docker, Kubernetes/GKE · compilation — JAX/XLA, vLLM · telemetry — native node metrics and profiler receipts.
+> **Sean Yépez · Stanford ME344, Summer 2026.**
+> Report: this README · configs: [`Dockerfile`](Dockerfile), [`Dockerfile.tpu`](Dockerfile.tpu), [`k8s/`](k8s/) · notebook: [`notebooks/hardware_profile.ipynb`](notebooks/hardware_profile.ipynb) · slides: [`slides/`](slides/)
 
 I work on grading in STEM at Stanford, and this repository is my ME344 study of two questions from that work: how much does fine-tuning our own models help, and how could we scale grading to other classes on robust cloud infrastructure? It evaluates supervised fine-tuning and serving systems on **[RiceChem](https://arxiv.org/abs/2404.14316)** (Sonkar et al., 2024), a human-labeled benchmark for long-form chemistry grading.
 
