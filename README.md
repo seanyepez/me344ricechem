@@ -80,8 +80,6 @@ The raw dataset and frozen test rows remain on the authorized client. Training a
 
 ### Accuracy
 
-We replicated the experiments of [Sonkar et al. (2024)](https://arxiv.org/abs/2404.14316) (encoder fine-tunes, cold-start, data-efficiency) and the rubric-judge protocol of [Rao and Callison-Burch (2026)](https://arxiv.org/abs/2603.00077), and our results are consistent with theirs. Sorted highest to lowest:
-
 | Model and setting | Agreement with TA labels (frozen test) |
 |---|---:|
 | RoBERTa-large-MNLI fine-tune, published record (Sonkar 2024) | 86.8% |
@@ -96,6 +94,10 @@ We replicated the experiments of [Sonkar et al. (2024)](https://arxiv.org/abs/24
 | Gemma 3 4B, base | 67.2% |
 
 Seed-level values and the 27B multi-seed battery: [`results/replication_summary.md`](results/replication_summary.md).
+
+About the model names: RoBERTa, BART, BERT, and ModernBERT are small encoder classifiers (110M-400M parameters) that read one answer plus one criterion and output TRUE/FALSE directly. They are the published state of the art on RiceChem, and we trained them for two reasons: to prove our pipeline reproduces the published record, and to set the accuracy ceiling. Gemma (fine-tuned by us) and Claude Opus (the frontier reference) are generative models — the class a grading product can deploy, tune, and ask to explain its decisions — measured against that ceiling.
+
+We replicated the experiments of [Sonkar et al. (2024)](https://arxiv.org/abs/2404.14316) (encoder fine-tunes, cold-start, data-efficiency) and the rubric-judge protocol of [Rao and Callison-Burch (2026)](https://arxiv.org/abs/2603.00077); our results are consistent with theirs.
 
 The practical deployment bar used throughout this study is agreement at parity with the frontier reference (about 80% on this benchmark, always subject to the single-TA-label caveat). The ~72% 4B lanes sit below that bar, so their 30-41× serving speedups are systems results, not deployment readiness; the fine-tuned 27B is the lane that clears it.
 
